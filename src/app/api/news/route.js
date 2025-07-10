@@ -21,10 +21,27 @@ const verifyToken = (req) => {
     }
 };
 
-export async function GET() {
+export async function GET(req) {
     await connectDB();
     try {
-        const posts = await Post.find().populate('author', 'username email').sort({ createdAt: -1 });
+        const { searchParams } = new URL(req.url);
+        const authorId = searchParams.get('authorId');
+
+        let query = {};
+        if (authorId) {
+            const authResult = verifyToken(req);
+            if (authResult.error) {
+                return NextResponse.json({ message: authResult.error }, { status: authResult.status });
+            }
+            const { decoded } = authResult;
+
+            if (decoded.id !== authorId && decoded.role !== 'admin' && decoded.role !== 'editor') {
+                return NextResponse.json({ message: "Forbidden: You can only view your own posts" }, { status: 403 });
+            }
+            query = { author: authorId };
+        }
+
+        const posts = await Post.find(query).populate('author', 'username email').sort({ createdAt: -1 });
         return NextResponse.json(posts, { status: 200 });
     } catch (error) {
         console.error("Error fetching posts:", error);

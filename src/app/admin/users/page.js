@@ -26,17 +26,28 @@ export default function AdminUsersPage() {
     const [editPassword, setEditPassword] = useState('');
 
     const fetchUsers = async () => {
-        if (!token) return;
+        if (!token) {
+            console.log("No token available, skipping fetchUsers.");
+            setLoading(false);
+            return;
+        }
         try {
+            console.log("Attempting to fetch users with token:", token);
             const res = await fetch('/api/user', {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                 },
             });
-            if (!res.ok) throw new Error('Failed to fetch users');
+            if (!res.ok) {
+                const errorData = await res.json();
+                console.error("Failed to fetch users, response not OK:", res.status, errorData);
+                throw new Error(errorData.message || 'Failed to fetch users');
+            }
             const data = await res.json();
+            console.log("Successfully fetched users:", data);
             setUsers(data);
         } catch (err) {
+            console.error("Error fetching users:", err);
             setError(err.message);
         } finally {
             setLoading(false);

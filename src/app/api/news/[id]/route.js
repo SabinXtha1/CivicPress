@@ -46,8 +46,14 @@ export async function PUT(req, { params }) {
     }
     const { decoded } = authResult;
 
-    if (decoded.role !== 'admin' && decoded.role !== 'editor') {
-        return NextResponse.json({ message: "Forbidden: Only admins and editors can update posts" }, { status: 403 });
+    const post = await Post.findById(id);
+    if (!post) {
+        return NextResponse.json({ message: "Post not found" }, { status: 404 });
+    }
+
+    // Allow admin/editor or the original author to update the post
+    if (decoded.role !== 'admin' && decoded.role !== 'editor' && decoded.id !== post.author.toString()) {
+        return NextResponse.json({ message: "Forbidden: You are not authorized to update this post" }, { status: 403 });
     }
 
     try {
@@ -75,17 +81,20 @@ export async function DELETE(req, { params }) {
     }
     const { decoded } = authResult;
 
-    if (decoded.role !== 'admin' && decoded.role !== 'editor') {
-        return NextResponse.json({ message: "Forbidden: Only admins and editors can delete posts" }, { status: 403 });
-    }
-
     try {
         const { id } = params;
-        const deletedPost = await Post.findByIdAndDelete(id);
+        const deletedPost = await Post.findById(id);
 
         if (!deletedPost) {
             return NextResponse.json({ message: "Post not found" }, { status: 404 });
         }
+
+        // Allow admin/editor or the original author to delete the post
+        if (decoded.role !== 'admin' && decoded.role !== 'editor' && decoded.id !== deletedPost.author.toString()) {
+            return NextResponse.json({ message: "Forbidden: You are not authorized to delete this post" }, { status: 403 });
+        }
+
+        await Post.findByIdAndDelete(id);
 
         return NextResponse.json({ message: "Post deleted successfully" }, { status: 200 });
     } catch (error) {

@@ -6,14 +6,18 @@ export default function PostForm({ post, onSave }) {
   const [formData, setFormData] = useState({
     title: '',
     content: '',
-    images: [],
-    author: '', // This should be the user's ID
+    images: '', // Changed to string for comma-separated URLs
     featured: false,
   });
 
   useEffect(() => {
     if (post) {
-      setFormData(post);
+      setFormData({
+        title: post.title || '',
+        content: post.content || '',
+        images: post.images ? post.images.join(', ') : '', // Join array to string
+        featured: post.featured || false,
+      });
     }
   }, [post]);
 
@@ -25,16 +29,13 @@ export default function PostForm({ post, onSave }) {
     }));
   };
 
-  const handleImageChange = (e) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      images: [...e.target.files],
-    }));
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSave(formData);
+    const dataToSave = {
+      ...formData,
+      images: formData.images.split(',').map(url => url.trim()).filter(url => url), // Split string back to array
+    };
+    onSave(dataToSave);
   };
 
   return (
@@ -61,24 +62,14 @@ export default function PostForm({ post, onSave }) {
         />
       </div>
       <div>
-        <label className="block text-sm font-medium">Author ID</label>
+        <label className="block text-sm font-medium">Image URLs (comma-separated)</label>
         <input
           type="text"
-          name="author"
-          value={formData.author}
+          name="images"
+          value={formData.images}
           onChange={handleChange}
           className="w-full p-2 border rounded"
-          required
-        />
-      </div>
-      <div>
-        <label className="block text-sm font-medium">Images</label>
-        <input
-          type="file"
-          name="images"
-          multiple
-          onChange={handleImageChange}
-          className="w-full p-2 border rounded"
+          placeholder="e.g., http://example.com/img1.jpg, http://example.com/img2.png"
         />
       </div>
       <div className="flex items-center">

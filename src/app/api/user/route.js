@@ -42,7 +42,7 @@ export async function POST(req) {
             email,
             password: hashedPassword,
             phone,
-            role:"admin"
+            
         });
 
         return NextResponse.json({ message: "User registered successfully", user: newUser }, { status: 201 });

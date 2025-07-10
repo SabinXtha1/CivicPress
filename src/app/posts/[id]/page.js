@@ -6,7 +6,9 @@ import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/componen
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { useAuth } from '@/context/AuthContext';
-import { ThumbsUp, MessageCircle } from 'lucide-react';
+import { ThumbsUp, MessageCircle, Edit } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import PostForm from '@/components/forms/PostForm';
 
 export default function SinglePostPage() {
     const { id } = useParams();
@@ -14,11 +16,12 @@ export default function SinglePostPage() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [newComment, setNewComment] = useState('');
+    const [isEditing, setIsEditing] = useState(false);
     const { user, token } = useAuth();
 
     const fetchPost = async () => {
         try {
-            const res = await fetch(`/api/news/${id}`); // Assuming you'll create a dynamic route for single post
+            const res = await fetch(`/api/news/${id}`);
             if (!res.ok) throw new Error('Failed to fetch post');
             const data = await res.json();
             setPost(data);
@@ -51,11 +54,10 @@ export default function SinglePostPage() {
             });
             const data = await res.json();
             if (res.ok) {
-                // Update the post's likes count and status locally
                 setPost(prevPost => ({
                     ...prevPost,
                     likes: data.message.includes('unliked')
-                        ? prevPost.likes.filter(like => like.user !== user?.id) // Assuming user.id is available
+                        ? prevPost.likes.filter(like => like.user !== user?.id)
                         : [...prevPost.likes, { user: user?.id }],
                 }));
             } else {
@@ -91,7 +93,7 @@ export default function SinglePostPage() {
             if (res.ok) {
                 setPost(prevPost => ({
                     ...prevPost,
-                    comments: [...prevPost.comments, { ...data.comment, author: { username: user?.username } }], // Add new comment with current user's username
+                    comments: [...prevPost.comments, { ...data.comment, author: { username: user?.username } }],
                 }));
                 setNewComment('');
             } else {
@@ -103,11 +105,40 @@ export default function SinglePostPage() {
         }
     };
 
+    const handleEditSave = async (updatedPostData) => {
+        if (!token) {
+            alert('You must be logged in to edit a post.');
+            return;
+        }
+        try {
+            const res = await fetch(`/api/news/${post._id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+                body: JSON.stringify(updatedPostData),
+            });
+            const data = await res.json();
+            if (res.ok) {
+                alert('Post updated successfully!');
+                setPost(data.post);
+                setIsEditing(false);
+            } else {
+                throw new Error(data.message || 'Failed to update post');
+            }
+        } catch (err) {
+            console.error('Error updating post:', err);
+            alert(err.message);
+        }
+    };
+
     if (loading) return <div className="text-center py-8">Loading post...</div>;
     if (error) return <div className="text-center py-8 text-red-500">Error: {error}</div>;
     if (!post) return <div className="text-center py-8">Post not found.</div>;
 
     const hasLiked = post.likes.some(like => like.user === user?.id);
+    const canEdit = user && (user.role === 'admin' || user.role === 'editor' || user.id === post.author._id);
 
     return (
         <div className="space-y-8">
@@ -135,6 +166,21 @@ export default function SinglePostPage() {
                             <MessageCircle className="mr-2 h-4 w-4" /> {post.comments.length} Comments
                         </Button>
                     </div>
+                    {canEdit && (
+                        <Dialog open={isEditing} onOpenChange={setIsEditing}>
+                            <DialogTrigger asChild>
+                                <Button variant="outline" onClick={() => setIsEditing(true)}>
+                                    <Edit className="mr-2 h-4 w-4" /> Edit Post
+                                </Button>
+                            </DialogTrigger>
+                            <DialogContent className="sm:max-w-[800px]">
+                                <DialogHeader>
+                                    <DialogTitle>Edit Post</DialogTitle>
+                                </DialogHeader>
+                                <PostForm post={post} onSave={handleEditSave} />
+                            </DialogContent>
+                        </Dialog>
+                    )}
                 </CardFooter>
             </Card>
 

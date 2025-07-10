@@ -13,8 +13,20 @@ export const AuthProvider = ({ children }) => {
         const storedToken = localStorage.getItem('token');
         const storedUser = localStorage.getItem('user');
         if (storedToken && storedUser) {
-            setToken(storedToken);
-            setUser(JSON.parse(storedUser));
+            try {
+                const decodedToken = JSON.parse(atob(storedToken.split('.')[1]));
+                if (decodedToken.exp * 1000 < Date.now()) {
+                    // Token expired
+                    console.log("Token expired, logging out.");
+                    logout();
+                } else {
+                    setToken(storedToken);
+                    setUser(JSON.parse(storedUser));
+                }
+            } catch (e) {
+                console.error("Error decoding token or parsing user data:", e);
+                logout();
+            }
         }
         setLoading(false);
     }, []);
