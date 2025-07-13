@@ -9,6 +9,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import PostForm from '@/components/forms/PostForm';
 import Link from 'next/link';
 import { Edit, Trash2 } from 'lucide-react';
+import { Toaster, toast } from 'react-hot-toast';
 
 export default function MyPostsPage() {
     const [posts, setPosts] = useState([]);
@@ -71,7 +72,7 @@ export default function MyPostsPage() {
 
             const data = await res.json();
             if (res.ok) {
-                alert('Post updated successfully!');
+                toast.success('Post updated successfully!');
                 setIsEditDialogOpen(false);
                 fetchMyPosts(); // Refresh list
             } else {
@@ -79,7 +80,7 @@ export default function MyPostsPage() {
             }
         } catch (err) {
             console.error('Error updating post:', err);
-            alert(err.message);
+            toast.error(err.message);
         }
     };
 
@@ -104,7 +105,7 @@ export default function MyPostsPage() {
             }
         } catch (err) {
             console.error('Error deleting post:', err);
-            alert(err.message);
+            toast.error(err.message);
         }
     };
 
@@ -126,6 +127,7 @@ export default function MyPostsPage() {
 
     return (
         <div className="space-y-8">
+            <Toaster position="bottom-right" />
             <h1 className="text-4xl font-bold mb-6">My Posts</h1>
 
             {posts.length === 0 ? (

@@ -9,6 +9,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, Dialog
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Toaster, toast } from 'react-hot-toast';
 
 export default function AdminUsersPage() {
     const [users, setUsers] = useState([]);
@@ -98,7 +99,7 @@ export default function AdminUsersPage() {
 
             const data = await res.json();
             if (res.ok) {
-                alert('User updated successfully!');
+                toast.success('User updated successfully!');
                 setIsEditDialogOpen(false);
                 fetchUsers(); // Refresh list
             } else {
@@ -106,7 +107,7 @@ export default function AdminUsersPage() {
             }
         } catch (err) {
             console.error('Error updating user:', err);
-            alert(err.message);
+            toast.error(err.message);
         }
     };
 
@@ -131,7 +132,7 @@ export default function AdminUsersPage() {
             }
         } catch (err) {
             console.error('Error deleting user:', err);
-            alert(err.message);
+            toast.error(err.message);
         }
     };
 
@@ -141,6 +142,7 @@ export default function AdminUsersPage() {
 
     return (
         <div className="space-y-8">
+            <Toaster position="bottom-right" />
             <h1 className="text-4xl font-bold mb-6">Manage Users</h1>
 
             {users.length === 0 ? (

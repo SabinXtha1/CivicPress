@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { toast } from 'react-hot-toast';
 
 const AuthContext = createContext(null);
 
@@ -53,7 +54,7 @@ export const AuthProvider = ({ children }) => {
             }
         } catch (error) {
             console.error('Login error:', error);
-            alert(error.message);
+            toast.error(error.message);
         }
     };
 
@@ -69,14 +70,14 @@ export const AuthProvider = ({ children }) => {
             const data = await res.json();
 
             if (res.ok) {
-                alert('Registration successful! Please log in.');
+                toast.success('Registration successful! Please log in.');
                 router.push('/login'); // Redirect to login page after registration
             } else {
                 throw new Error(data.message || 'Registration failed');
             }
         } catch (error) {
             console.error('Registration error:', error);
-            alert(error.message);
+            toast.error(error.message);
         }
     };
 

@@ -9,6 +9,7 @@ import { useAuth } from '@/context/AuthContext';
 import { ThumbsUp, MessageCircle, Edit } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import PostForm from '@/components/forms/PostForm';
+import { Toaster, toast } from 'react-hot-toast';
 
 export default function SinglePostPage() {
     const { id } = useParams();
@@ -40,7 +41,7 @@ export default function SinglePostPage() {
 
     const handleLike = async () => {
         if (!token) {
-            alert('You must be logged in to like a post.');
+            toast.error('You must be logged in to like a post.');
             return;
         }
         try {
@@ -65,18 +66,18 @@ export default function SinglePostPage() {
             }
         } catch (err) {
             console.error('Error liking/unliking post:', err);
-            alert(err.message);
+            toast.error(err.message);
         }
     };
 
     const handleAddComment = async (e) => {
         e.preventDefault();
         if (!token) {
-            alert('You must be logged in to comment.');
+            toast.error('You must be logged in to comment.');
             return;
         }
         if (!newComment.trim()) {
-            alert('Comment cannot be empty.');
+            toast.error('Comment cannot be empty.');
             return;
         }
 
@@ -101,13 +102,13 @@ export default function SinglePostPage() {
             }
         } catch (err) {
             console.error('Error adding comment:', err);
-            alert(err.message);
+            toast.error(err.message);
         }
     };
 
     const handleEditSave = async (updatedPostData) => {
         if (!token) {
-            alert('You must be logged in to edit a post.');
+            toast.error('You must be logged in to edit a post.');
             return;
         }
         try {
@@ -121,7 +122,7 @@ export default function SinglePostPage() {
             });
             const data = await res.json();
             if (res.ok) {
-                alert('Post updated successfully!');
+                toast.success('Post updated successfully!');
                 setPost(data.post);
                 setIsEditing(false);
             } else {
@@ -129,7 +130,7 @@ export default function SinglePostPage() {
             }
         } catch (err) {
             console.error('Error updating post:', err);
-            alert(err.message);
+            toast.error(err.message);
         }
     };
 
@@ -142,6 +143,7 @@ export default function SinglePostPage() {
 
     return (
         <div className="space-y-8">
+            <Toaster position="bottom-right" />
             <Card>
                 <CardHeader>
                     <CardTitle className="text-3xl font-bold">{post.title}</CardTitle>

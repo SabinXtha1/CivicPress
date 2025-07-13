@@ -3,6 +3,7 @@
 import * as React from "react"
 import * as SheetPrimitive from "@radix-ui/react-dialog"
 import { XIcon } from "lucide-react"
+import * as VisuallyHidden from "@radix-ui/react-visually-hidden"
 
 import { cn } from "@/lib/utils"
 
@@ -75,6 +76,9 @@ function SheetContent({
           <XIcon className="size-4" />
           <span className="sr-only">Close</span>
         </SheetPrimitive.Close>
+        <VisuallyHidden.Root>
+          <SheetPrimitive.Title>Sheet Title</SheetPrimitive.Title>
+        </VisuallyHidden.Root>
       </SheetPrimitive.Content>
     </SheetPortal>
   );

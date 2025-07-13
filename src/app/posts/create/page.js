@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import PostForm from '@/components/forms/PostForm';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Toaster, toast } from 'react-hot-toast';
 
 export default function CreatePostPage() {
     const { user, token } = useAuth();
@@ -14,7 +15,7 @@ export default function CreatePostPage() {
 
     const handleCreatePost = async (formData) => {
         if (!token) {
-            alert('You must be logged in to create a post.');
+            toast.error('You must be logged in to create a post.');
             router.push('/login');
             return;
         }
@@ -35,7 +36,7 @@ export default function CreatePostPage() {
             const data = await res.json();
 
             if (res.ok) {
-                alert('Post created successfully!');
+                toast.success('Post created successfully!');
                 router.push('/posts/my-posts'); // Redirect to my posts page
             } else {
                 throw new Error(data.message || 'Failed to create post');
@@ -43,7 +44,7 @@ export default function CreatePostPage() {
         } catch (err) {
             console.error('Error creating post:', err);
             setError(err.message);
-            alert(err.message);
+            toast.error(err.message);
         } finally {
             setLoading(false);
         }
@@ -55,6 +56,7 @@ export default function CreatePostPage() {
 
     return (
         <div className="space-y-8">
+            <Toaster position="bottom-right" />
             <h1 className="text-4xl font-bold mb-6">Create New Post</h1>
             <Card>
                 <CardHeader>

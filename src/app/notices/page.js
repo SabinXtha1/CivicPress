@@ -7,6 +7,7 @@ import { useAuth } from '@/context/AuthContext';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
+import { Toaster, toast } from 'react-hot-toast';
 
 export default function NoticesPage() {
     const [notices, setNotices] = useState([]);
@@ -38,11 +39,11 @@ export default function NoticesPage() {
     const handleCreateNotice = async (e) => {
         e.preventDefault();
         if (!token) {
-            alert('You must be logged in to create a notice.');
+            toast.error('You must be logged in to create a notice.');
             return;
         }
         if (!user || user.role !== 'admin') {
-            alert('You do not have permission to create a notice.');
+            toast.error('You do not have permission to create a notice.');
             return;
         }
 
@@ -61,7 +62,7 @@ export default function NoticesPage() {
 
             const data = await res.json();
             if (res.ok) {
-                alert('Notice created successfully!');
+                toast.success('Notice created successfully!');
                 setNewNoticeTitle('');
                 setNewNoticeImage('');
                 setIsDialogOpen(false);
@@ -71,7 +72,7 @@ export default function NoticesPage() {
             }
         } catch (err) {
             console.error('Error creating notice:', err);
-            alert(err.message);
+            toast.error(err.message);
         }
     };
 
@@ -80,6 +81,7 @@ export default function NoticesPage() {
 
     return (
         <div className="space-y-8">
+            <Toaster position="bottom-right" />
             <div className="flex justify-between items-center mb-6">
                 <h1 className="text-4xl font-bold">All Notices</h1>
                 {(user && user.role === 'admin') && (

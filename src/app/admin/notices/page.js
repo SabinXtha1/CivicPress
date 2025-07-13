@@ -9,6 +9,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, Dialog
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import NoticeForm from '@/components/forms/NoticeForm';
+import { Toaster, toast } from 'react-hot-toast';
 
 export default function AdminNoticesPage() {
     const [notices, setNotices] = useState([]);
@@ -73,7 +74,7 @@ export default function AdminNoticesPage() {
 
             const data = await res.json();
             if (res.ok) {
-                alert('Notice updated successfully!');
+                toast.success('Notice updated successfully!');
                 setIsEditDialogOpen(false);
                 fetchNotices(); // Refresh list
             } else {
@@ -81,7 +82,7 @@ export default function AdminNoticesPage() {
             }
         } catch (err) {
             console.error('Error updating notice:', err);
-            alert(err.message);
+            toast.error(err.message);
         }
     };
 
@@ -100,7 +101,7 @@ export default function AdminNoticesPage() {
 
             const data = await res.json();
             if (res.ok) {
-                alert('Notice created successfully!');
+                toast.success('Notice created successfully!');
                 setIsCreateDialogOpen(false);
                 fetchNotices(); // Refresh list
             } else {
@@ -108,7 +109,7 @@ export default function AdminNoticesPage() {
             }
         } catch (err) {
             console.error('Error creating notice:', err);
-            alert(err.message);
+            toast.error(err.message);
         }
     };
 
@@ -133,7 +134,7 @@ export default function AdminNoticesPage() {
             }
         } catch (err) {
             console.error('Error deleting notice:', err);
-            alert(err.message);
+            toast.error(err.message);
         }
     };
 
@@ -143,6 +144,7 @@ export default function AdminNoticesPage() {
 
     return (
         <div className="space-y-8">
+            <Toaster position="bottom-right" />
             <div className="flex justify-between items-center mb-6">
                 <h1 className="text-4xl font-bold">Manage Notices</h1>
                 <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>

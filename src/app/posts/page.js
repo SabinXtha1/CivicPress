@@ -10,6 +10,7 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Toaster, toast } from 'react-hot-toast';
 
 export default function PostsPage() {
     const [posts, setPosts] = useState([]);
@@ -43,11 +44,11 @@ export default function PostsPage() {
     const handleCreatePost = async (e) => {
         e.preventDefault();
         if (!token) {
-            alert('You must be logged in to create a post.');
+            toast.error('You must be logged in to create a post.');
             return;
         }
         if (!user || (user.role !== 'admin' && user.role !== 'user')) {
-            alert('You do not have permission to create a post.');
+            toast.error('You do not have permission to create a post.');
             return;
         }
 
@@ -68,7 +69,7 @@ export default function PostsPage() {
 
             const data = await res.json();
             if (res.ok) {
-                alert('Post created successfully!');
+                toast.success('Post created successfully!');
                 setNewPostTitle('');
                 setNewPostContent('');
                 setNewPostImages('');
@@ -80,7 +81,7 @@ export default function PostsPage() {
             }
         } catch (err) {
             console.error('Error creating post:', err);
-            alert(err.message);
+            toast.error(err.message);
         }
     };
 
@@ -89,6 +90,7 @@ export default function PostsPage() {
 
     return (
         <div className="space-y-8">
+            <Toaster position="bottom-right" />
             <div className="flex justify-between items-center mb-6">
                 <h1 className="text-4xl font-bold">All Posts</h1>
                 {(user && (user.role === 'admin' || user.role === 'user')) && (

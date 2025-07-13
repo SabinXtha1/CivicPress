@@ -131,24 +131,24 @@ export default function HeroSection() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.7 }}
                 >
-                    <h3 className="text-2xl font-bold mb-4 text-gray-800">Subscribe to Notice SMS</h3>
-                    <form onSubmit={handleSubscribe} className="flex flex-col md:flex-row gap-4">
+                    <h3 className="text-2xl font-bold mb-4 text-gray-800 text-center">Subscribe to Notice SMS</h3>
+                    <form onSubmit={handleSubscribe} className="flex flex-col  items-center  gap-4">
                         <Input
                             type="tel"
                             placeholder="Phone Number (required)"
                             value={phoneNumber}
                             onChange={(e) => setPhoneNumber(e.target.value)}
                             required
-                            className="flex-grow"
+                            className="flex-grow max-w-[600px]"
                         />
                         <Input
                             type="email"
                             placeholder="Email (optional)"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            className="flex-grow"
+                            className="flex-grow max-w-[600px]"
                         />
-                        <Button type="submit" disabled={subscribing}>
+                        <Button type="submit" disabled={subscribing} className='max-w-[300px]'>
                             {subscribing ? "Subscribing..." : "Subscribe"}
                         </Button>
                     </form>

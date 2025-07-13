@@ -10,6 +10,7 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Toaster, toast } from 'react-hot-toast';
 
 export default function AdminPostsPage() {
     const [posts, setPosts] = useState([]);
@@ -79,7 +80,7 @@ export default function AdminPostsPage() {
 
             const data = await res.json();
             if (res.ok) {
-                alert('Post updated successfully!');
+                toast.success('Post updated successfully!');
                 setIsEditDialogOpen(false);
                 fetchPosts(); // Refresh list
             } else {
@@ -87,7 +88,7 @@ export default function AdminPostsPage() {
             }
         } catch (err) {
             console.error('Error updating post:', err);
-            alert(err.message);
+            toast.error(err.message);
         }
     };
 
@@ -112,7 +113,7 @@ export default function AdminPostsPage() {
             }
         } catch (err) {
             console.error('Error deleting post:', err);
-            alert(err.message);
+            toast.error(err.message);
         }
     };
 
@@ -122,6 +123,7 @@ export default function AdminPostsPage() {
 
     return (
         <div className="space-y-8">
+            <Toaster position="bottom-right" />
             <h1 className="text-4xl font-bold mb-6">Manage Posts</h1>
 
             {posts.length === 0 ? (
