@@ -92,6 +92,22 @@ const noticeSchema = new Schema({
     }
 }, { timestamps: true });
 
+const noticeSmsSchema = new Schema({
+    phoneNumber: {
+        type: String,
+        required: true,
+        unique: true,
+        trim: true
+    },
+    email: {
+        type: String,
+        trim: true,
+        match: [/.+\@.+\..+/, "Please fill a valid email address"],
+        sparse: true // Allows null values to not violate unique constraint if email was unique
+    }
+}, { timestamps: true });
+
 export const User = mongoose.models.User || mongoose.model("User", userSchema);
 export const Post = mongoose.models.Post || mongoose.model("Post", postSchema);
 export const Notice = mongoose.models.Notice || mongoose.model("Notice", noticeSchema);
+export const NoticeSms = mongoose.models.NoticeSms || mongoose.model("NoticeSms", noticeSmsSchema);

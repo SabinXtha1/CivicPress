@@ -1,5 +1,5 @@
 import { connectDB } from "@/lib/db";
-import { User } from "@/lib/Schema/UserSchema";
+import { User, NoticeSms } from "@/lib/Schema/UserSchema";
 import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
@@ -44,6 +44,17 @@ export async function POST(req) {
             phone,
             
         });
+
+        // Attempt to create a NoticeSms entry for the new user
+        try {
+            await NoticeSms.create({
+                phoneNumber: phone,
+                email: email,
+            });
+        } catch (smsError) {
+            console.error("Error creating NoticeSms entry for new user:", smsError);
+            // Continue with user registration success even if NoticeSms fails
+        }
 
         return NextResponse.json({ message: "User registered successfully", user: newUser }, { status: 201 });
 

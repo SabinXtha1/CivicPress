@@ -1,8 +1,14 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { Loader2 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
-export default function UserForm({ user, onSave }) {
+export default function UserForm({ user, onSave, loading }) {
   const [formData, setFormData] = useState({
     email: '',
     username: '',
@@ -22,73 +28,92 @@ export default function UserForm({ user, onSave }) {
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
+  const handleRoleChange = (value) => {
+    setFormData((prevData) => ({ ...prevData, role: value }));
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     onSave(formData);
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div>
-        <label className="block text-sm font-medium">Email</label>
-        <input
+    <motion.form 
+        onSubmit={handleSubmit} 
+        className="space-y-4"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+    >
+      <div className="grid gap-2">
+        <Label htmlFor="email">Email</Label>
+        <Input
+          id="email"
           type="email"
           name="email"
           value={formData.email}
           onChange={handleChange}
-          className="w-full p-2 border rounded"
           required
         />
       </div>
-      <div>
-        <label className="block text-sm font-medium">Username</label>
-        <input
+      <div className="grid gap-2">
+        <Label htmlFor="username">Username</Label>
+        <Input
+          id="username"
           type="text"
           name="username"
           value={formData.username}
           onChange={handleChange}
-          className="w-full p-2 border rounded"
           required
         />
       </div>
-      <div>
-        <label className="block text-sm font-medium">Phone</label>
-        <input
+      <div className="grid gap-2">
+        <Label htmlFor="phone">Phone</Label>
+        <Input
+          id="phone"
           type="text"
           name="phone"
           value={formData.phone}
           onChange={handleChange}
-          className="w-full p-2 border rounded"
           required
         />
       </div>
-      <div>
-        <label className="block text-sm font-medium">Password</label>
-        <input
+      <div className="grid gap-2">
+        <Label htmlFor="password">Password</Label>
+        <Input
+          id="password"
           type="password"
           name="password"
           value={formData.password}
           onChange={handleChange}
-          className="w-full p-2 border rounded"
           required
         />
       </div>
-      <div>
-        <label className="block text-sm font-medium">Role</label>
-        <select
-          name="role"
-          value={formData.role}
-          onChange={handleChange}
-          className="w-full p-2 border rounded"
-        >
-          <option value="user">User</option>
-          <option value="admin">Admin</option>
-          <option value="editor">Editor</option>
-        </select>
+      <div className="grid gap-2">
+        <Label htmlFor="role">Role</Label>
+        <Select name="role" value={formData.role} onValueChange={handleRoleChange}>
+            <SelectTrigger>
+                <SelectValue placeholder="Select a role" />
+            </SelectTrigger>
+            <SelectContent>
+                <SelectItem value="user">User</SelectItem>
+                <SelectItem value="admin">Admin</SelectItem>
+                <SelectItem value="editor">Editor</SelectItem>
+            </SelectContent>
+        </Select>
       </div>
-      <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded">
-        Save
-      </button>
-    </form>
+      <Button type="submit" disabled={loading}>
+        {loading ? (
+            <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
+            >
+                <Loader2 className="h-4 w-4" />
+            </motion.div>
+        ) : (
+            "Save"
+        )}
+      </Button>
+    </motion.form>
   );
 }

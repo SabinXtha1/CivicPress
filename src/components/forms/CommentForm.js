@@ -1,8 +1,14 @@
 'use client';
 
 import { useState } from 'react';
+import { motion } from 'framer-motion';
+import { Loader2 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
 
-export default function CommentForm({ onSave }) {
+export default function CommentForm({ onSave, loading }) {
   const [comment, setComment] = useState('');
   const [author, setAuthor] = useState(''); // This should be the user's ID
 
@@ -14,29 +20,44 @@ export default function CommentForm({ onSave }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 mt-4">
-      <div>
-        <label className="block text-sm font-medium">Author ID</label>
-        <input
+    <motion.form 
+        onSubmit={handleSubmit} 
+        className="space-y-4 mt-4"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+    >
+      <div className="grid gap-2">
+        <Label htmlFor="author">Author ID</Label>
+        <Input
+          id="author"
           type="text"
           value={author}
           onChange={(e) => setAuthor(e.target.value)}
-          className="w-full p-2 border rounded"
           required
         />
       </div>
-      <div>
-        <label className="block text-sm font-medium">Comment</label>
-        <textarea
+      <div className="grid gap-2">
+        <Label htmlFor="comment">Comment</Label>
+        <Textarea
+          id="comment"
           value={comment}
           onChange={(e) => setComment(e.target.value)}
-          className="w-full p-2 border rounded"
           required
         />
       </div>
-      <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded">
-        Add Comment
-      </button>
-    </form>
+      <Button type="submit" disabled={loading}>
+        {loading ? (
+            <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
+            >
+                <Loader2 className="h-4 w-4" />
+            </motion.div>
+        ) : (
+            "Add Comment"
+        )}
+      </Button>
+    </motion.form>
   );
 }

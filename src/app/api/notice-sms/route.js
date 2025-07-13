@@ -1,5 +1,5 @@
 import { connectDB } from "@/lib/db";
-import { Notice } from "@/lib/Schema/UserSchema";
+import { NoticeSms } from "@/lib/Schema/UserSchema";
 import { NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 
@@ -21,27 +21,32 @@ const verifyToken = (req) => {
     }
 };
 
-export async function GET(req) {
+export async function POST(req) {
     await connectDB();
     try {
-        const url = new URL(req.url);
-        const last24Hours = url.searchParams.get('last24Hours');
-        let query = {};
+        const { phoneNumber, email } = await req.json();
 
-        if (last24Hours === 'true') {
-            const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
-            query.createdAt = { $gte: twentyFourHoursAgo };
+        if (!phoneNumber) {
+            return NextResponse.json({ message: "Phone number is required" }, { status: 400 });
         }
 
-        const notices = await Notice.find(query).sort({ createdAt: -1 });
-        return NextResponse.json(notices, { status: 200 });
+        const newSubscription = await NoticeSms.create({
+            phoneNumber,
+            email,
+        });
+
+        return NextResponse.json({ message: "Subscription created successfully", subscription: newSubscription }, { status: 201 });
+
     } catch (error) {
-        console.error("Error fetching notices:", error);
+        console.error("Error creating subscription:", error);
+        if (error.code === 11000) {
+            return NextResponse.json({ message: "Phone number already subscribed" }, { status: 409 });
+        }
         return NextResponse.json({ message: "Something went wrong", error: error.message }, { status: 500 });
     }
 }
 
-export async function POST(req) {
+export async function GET(req) {
     await connectDB();
     const authResult = verifyToken(req);
     if (authResult.error) {
@@ -50,21 +55,14 @@ export async function POST(req) {
     const { decoded } = authResult;
 
     if (decoded.role !== 'admin') {
-        return NextResponse.json({ message: "Forbidden: Only admins can create notices" }, { status: 403 });
+        return NextResponse.json({ message: "Forbidden: Only admins can view subscriptions" }, { status: 403 });
     }
 
     try {
-        const { title, image } = await req.json();
-
-        const newNotice = await Notice.create({
-            title,
-            image,
-        });
-
-        return NextResponse.json({ message: "Notice created successfully", notice: newNotice }, { status: 201 });
-
+        const subscriptions = await NoticeSms.find().sort({ createdAt: -1 });
+        return NextResponse.json(subscriptions, { status: 200 });
     } catch (error) {
-        console.error("Error creating notice:", error);
+        console.error("Error fetching subscriptions:", error);
         return NextResponse.json({ message: "Something went wrong", error: error.message }, { status: 500 });
     }
 }
