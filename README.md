@@ -1,36 +1,97 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Ward News
+
+Ward News is a full-stack web application built with Next.js and MongoDB. It serves as a platform for sharing news and updates within a local community or "ward." This project aims to replace the traditional method of a person going door-to-door to share notices and meeting information.
+
+## Tech Stack
+
+- **Frontend:**
+  - [Next.js](https://nextjs.org/) - React framework for server-side rendering and static site generation.
+  - [React](https://reactjs.org/) - JavaScript library for building user interfaces.
+  - [Tailwind CSS](https://tailwindcss.com/) - A utility-first CSS framework for rapid UI development.
+  - [Radix UI](https://www.radix-ui.com/) - A collection of unstyled, accessible UI components.
+- **Backend:**
+  - [Next.js API Routes](https://nextjs.org/docs/api-routes/introduction) - For building serverless API endpoints.
+  - [MongoDB](https://www.mongodb.com/) - NoSQL database for storing application data.
+  - [Mongoose](https://mongoosejs.com/) - Object Data Modeling (ODM) library for MongoDB and Node.js.
+  - [Nodemailer](https://nodemailer.com/) - For sending emails.
+- **Authentication:**
+  - [JSON Web Tokens (JWT)](https://jwt.io/) - For securing API routes and managing user sessions.
+  - [bcryptjs](https://www.npmjs.com/package/bcryptjs) - For hashing user passwords.
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- [Node.js](https://nodejs.org/en/) (v18 or later)
+- [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/)
+- [MongoDB](https://www.mongodb.com/try/download/community) - A running instance of MongoDB.
+
+### Installation
+
+1. **Clone the repository:**
+
+   ```bash
+   git clone https://github.com/your-username/wardnews.git
+   cd wardnews
+   ```
+
+2. **Install dependencies:**
+
+   ```bash
+   npm install
+   ```
+
+3. **Set up environment variables:**
+
+   Create a `.env.local` file in the root of the project and add the following environment variables:
+
+   ```bash
+   MONGODB_URI=<your_mongodb_connection_string>
+   JWT_SECRET=<your_jwt_secret>
+   ```
+
+### Running the Development Server
+
+To start the development server, run:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Available Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `npm run dev`: Starts the development server.
+- `npm run build`: Builds the application for production.
+- `npm run start`: Starts a production server.
+- `npm run lint`: Runs the linter.
 
-## Learn More
+## Project Structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+.
+├── public
+├── src
+│   ├── app
+│   │   ├── (auth)
+│   │   ├── admin
+│   │   ├── api
+│   │   ├── notices
+│   │   ├── posts
+│   │   └── users
+│   ├── components
+│   │   ├── forms
+│   │   └── ui
+│   ├── context
+│   ├── hooks
+│   └── lib
+│       └── Schema
+└── ...
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **`src/app`**: Contains the main application logic, including pages, API routes, and layouts.
+- **`src/components`**: Contains reusable React components.
+- **`src/context`**: Contains React context providers for managing global state.
+- **`src/hooks`**: Contains custom React hooks.
+- **`src/lib`**: Contains utility functions, database connection logic, and Mongoose schemas.
