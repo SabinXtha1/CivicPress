@@ -7,6 +7,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Home, Newspaper, Bell, User, LogIn, LogOut, UserPlus, Menu, Plus, FileText } from "lucide-react"
 import Link from "next/link"
 import { useState } from "react"
+import { ThemeToggle } from "./theme-toggle"
 
 export default function NavBar() {
   const { user, logout } = useAuth()
@@ -224,6 +225,7 @@ export default function NavBar() {
 
           {/* User Section */}
           <div className="flex items-center space-x-2">
+            <ThemeToggle />
             {user ? (
               <div className="hidden md:flex items-center space-x-3">
                 <span className="text-sm text-muted-foreground">

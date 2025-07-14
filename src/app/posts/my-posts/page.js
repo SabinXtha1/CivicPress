@@ -8,7 +8,9 @@ import { useRouter } from 'next/navigation';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import PostForm from '@/components/forms/PostForm';
 import Link from 'next/link';
-import { Edit, Trash2 } from 'lucide-react';
+import { Edit, Trash2, Loader2 } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Skeleton } from '@/components/ui/skeleton';
 import { Toaster, toast } from 'react-hot-toast';
 
 export default function MyPostsPage() {
@@ -118,7 +120,31 @@ export default function MyPostsPage() {
     }
 
     if (loading) {
-        return <div className="text-center py-8">Loading your posts...</div>;
+        return (
+            <div className="space-y-8 p-4">
+                <h1 className="text-4xl font-bold mb-6">My Posts</h1>
+                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                    {[...Array(6)].map((_, i) => (
+                        <Card key={i}>
+                            <CardHeader>
+                                <Skeleton className="h-6 w-3/4 mb-2" />
+                                <Skeleton className="h-4 w-1/2" />
+                            </CardHeader>
+                            <CardContent>
+                                <Skeleton className="h-48 w-full mb-4" />
+                                <Skeleton className="h-4 w-full mb-2" />
+                                <Skeleton className="h-4 w-5/6 mb-4" />
+                                <div className="flex space-x-2">
+                                    <Skeleton className="h-10 w-20" />
+                                    <Skeleton className="h-10 w-20" />
+                                    <Skeleton className="h-10 w-20" />
+                                </div>
+                            </CardContent>
+                        </Card>
+                    ))}
+                </div>
+            </div>
+        );
     }
 
     if (error) {
@@ -126,7 +152,7 @@ export default function MyPostsPage() {
     }
 
     return (
-        <div className="space-y-8">
+        <div className="space-y-8 p-4">
             <Toaster position="bottom-right" />
             <h1 className="text-4xl font-bold mb-6">My Posts</h1>
 
@@ -135,29 +161,36 @@ export default function MyPostsPage() {
             ) : (
                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                     {posts.map((post) => (
-                        <Card key={post._id}>
-                            <CardHeader>
-                                <CardTitle>{post.title}</CardTitle>
-                                <p className="text-sm text-muted-foreground">Created on {new Date(post.createdAt).toLocaleDateString()}</p>
-                            </CardHeader>
-                            <CardContent>
-                                {post.images && post.images.length > 0 && (
-                                    <img src={post.images[0]} alt={post.title} className="w-full h-48 object-cover rounded-md mb-4" />
-                                )}
-                                <p className="text-sm line-clamp-3">{post.content}</p>
-                                <div className="flex space-x-2 mt-4">
-                                    <Button variant="outline" size="sm" onClick={() => handleEditClick(post)}>
-                                        <Edit className="h-4 w-4 mr-1" /> Edit
-                                    </Button>
-                                    <Button variant="destructive" size="sm" onClick={() => handleDeletePost(post._id)}>
-                                        <Trash2 className="h-4 w-4 mr-1" /> Delete
-                                    </Button>
-                                    <Button variant="link" asChild className="px-0">
-                                        <Link href={`/posts/${post._id}`}>View</Link>
-                                    </Button>
-                                </div>
-                            </CardContent>
-                        </Card>
+                        <motion.div
+                            key={post._id}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.3 }}
+                        >
+                            <Card>
+                                <CardHeader>
+                                    <CardTitle>{post.title}</CardTitle>
+                                    <p className="text-sm text-muted-foreground">Created on {new Date(post.createdAt).toLocaleDateString()}</p>
+                                </CardHeader>
+                                <CardContent>
+                                    {post.images && post.images.length > 0 && (
+                                        <img src={post.images[0]} alt={post.title} className="w-full h-48 object-cover rounded-md mb-4" />
+                                    )}
+                                    <p className="text-sm line-clamp-3">{post.content}</p>
+                                    <div className="flex space-x-2 mt-4">
+                                        <Button variant="outline" size="icon" onClick={() => handleEditClick(post)} title="Edit Post">
+                                            <Edit className="h-4 w-4" />
+                                        </Button>
+                                        <Button variant="destructive" size="icon" onClick={() => handleDeletePost(post._id)} title="Delete Post">
+                                            <Trash2 className="h-4 w-4" />
+                                        </Button>
+                                        <Button variant="link" asChild className="px-0">
+                                            <Link href={`/posts/${post._id}`}>View</Link>
+                                        </Button>
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        </motion.div>
                     ))}
                 </div>
             )}
@@ -167,6 +200,9 @@ export default function MyPostsPage() {
                     <DialogContent className="sm:max-w-[800px]">
                         <DialogHeader>
                             <DialogTitle>Edit Post</DialogTitle>
+                            <DialogDescription>
+                                Make changes to your post here. Click save when you're done.
+                            </DialogDescription>
                         </DialogHeader>
                         <PostForm post={currentEditingPost} onSave={handleUpdatePost} />
                     </DialogContent>

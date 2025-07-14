@@ -42,7 +42,7 @@ export default function UsersPage() {
     if (error) return <div className="text-center py-8 text-red-500">Error: {error}</div>;
 
     return (
-        <div className="space-y-8">
+        <div className="space-y-8 p-4">
             <h1 className="text-4xl font-bold mb-6">All Users</h1>
 
             {users.length === 0 ? (

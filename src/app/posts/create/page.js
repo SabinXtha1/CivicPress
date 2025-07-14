@@ -6,6 +6,9 @@ import { useAuth } from '@/context/AuthContext';
 import PostForm from '@/components/forms/PostForm';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Toaster, toast } from 'react-hot-toast';
+import { Loader2 } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export default function CreatePostPage() {
     const { user, token } = useAuth();
@@ -54,8 +57,28 @@ export default function CreatePostPage() {
         return <div className="text-center py-8">Please log in to create a post.</div>;
     }
 
+    if (loading) {
+        return (
+            <div className="space-y-8 p-4">
+                <h1 className="text-4xl font-bold mb-6">Create New Post</h1>
+                <Card>
+                    <CardHeader>
+                        <Skeleton className="h-6 w-1/2 mb-2" />
+                    </CardHeader>
+                    <CardContent>
+                        <Skeleton className="h-10 w-full mb-4" />
+                        <Skeleton className="h-32 w-full mb-4" />
+                        <Skeleton className="h-10 w-full mb-4" />
+                        <Skeleton className="h-6 w-1/4 mb-4" />
+                        <Skeleton className="h-10 w-full" />
+                    </CardContent>
+                </Card>
+            </div>
+        );
+    }
+
     return (
-        <div className="space-y-8">
+        <div className="space-y-8 p-4">
             <Toaster position="bottom-right" />
             <h1 className="text-4xl font-bold mb-6">Create New Post</h1>
             <Card>
@@ -66,7 +89,6 @@ export default function CreatePostPage() {
                     <PostForm onSave={handleCreatePost} />
                 </CardContent>
             </Card>
-            {loading && <div className="text-center py-4">Creating post...</div>}
             {error && <div className="text-center py-4 text-red-500">Error: {error}</div>}
         </div>
     );

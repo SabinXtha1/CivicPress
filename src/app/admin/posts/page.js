@@ -11,6 +11,9 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Toaster, toast } from 'react-hot-toast';
+import { Edit, Trash, Loader2 } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export default function AdminPostsPage() {
     const [posts, setPosts] = useState([]);
@@ -117,12 +120,37 @@ export default function AdminPostsPage() {
         }
     };
 
-    if (loading || !user || (user.role !== 'admin' && user.role !== 'editor')) {
-        return <div className="text-center py-8">Loading or unauthorized...</div>;
+    if (!user || (user.role !== 'admin' && user.role !== 'editor')) {
+        return <div className="text-center py-8">Unauthorized access.</div>;
+    }
+
+    if (loading) {
+        return (
+            <div className="space-y-8 p-4">
+                <h1 className="text-4xl font-bold mb-6">Manage Posts</h1>
+                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                    {[...Array(6)].map((_, i) => (
+                        <Card key={i}>
+                            <CardHeader>
+                                <Skeleton className="h-6 w-3/4 mb-2" />
+                                <Skeleton className="h-4 w-1/2" />
+                            </CardHeader>
+                            <CardContent>
+                                <Skeleton className="h-48 w-full mb-4" />
+                                <div className="flex space-x-2">
+                                    <Skeleton className="h-10 w-10 rounded-md" />
+                                    <Skeleton className="h-10 w-10 rounded-md" />
+                                </div>
+                            </CardContent>
+                        </Card>
+                    ))}
+                </div>
+            </div>
+        );
     }
 
     return (
-        <div className="space-y-8">
+        <div className="space-y-8 p-4 ">
             <Toaster position="bottom-right" />
             <h1 className="text-4xl font-bold mb-6">Manage Posts</h1>
 
@@ -131,22 +159,35 @@ export default function AdminPostsPage() {
             ) : (
                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                     {posts.map((post) => (
-                        <Card key={post._id}>
-                            <CardHeader>
-                                <CardTitle>{post.title}</CardTitle>
-                                <p className="text-sm text-muted-foreground">By {post.author?.username || 'Unknown'} on {new Date(post.createdAt).toLocaleDateString()}</p>
-                            </CardHeader>
-                            <CardContent>
+                        <motion.div
+                            key={post._id}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.3 }}
+                        >
+                            <Card>
+                                <CardHeader>
+                                    <CardTitle>{post.title}</CardTitle>
+                                    <p className="text-sm text-muted-foreground">By {post.author?.username || 'Unknown'} on {new Date(post.createdAt).toLocaleDateString()}</p>
+                                </CardHeader>
                                 {post.images && post.images.length > 0 && (
-                                    <img src={post.images[0]} alt={post.title} className="w-full h-48 object-cover rounded-md mb-4" />
+                                    <CardContent>
+                                        <img src={post.images[0]} alt={post.title} className="w-full h-48 object-cover rounded-md mb-4" />
+                                    </CardContent>
                                 )}
-                                <p className="text-sm line-clamp-3">{post.content}</p>
-                                <div className="flex space-x-2 mt-4">
-                                    <Button variant="outline" onClick={() => handleEditClick(post)}>Edit</Button>
-                                    <Button variant="destructive" onClick={() => handleDeletePost(post._id)}>Delete</Button>
-                                </div>
-                            </CardContent>
-                        </Card>
+                                <CardContent>
+                                    <p className="text-sm line-clamp-3">{post.content}</p>
+                                    <div className="flex space-x-2 mt-4">
+                                        <Button variant="outline" size="icon" onClick={() => handleEditClick(post)} title="Edit Post">
+                                            <Edit className="h-4 w-4" />
+                                        </Button>
+                                        <Button variant="destructive" size="icon" onClick={() => handleDeletePost(post._id)} title="Delete Post">
+                                            <Trash className="h-4 w-4" />
+                                        </Button>
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        </motion.div>
                     ))}
                 </div>
             )}

@@ -2,6 +2,7 @@
 
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Footer from "../components/ui/footer"
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import { AuthProvider, useAuth } from '../context/AuthContext';
 import { useRouter } from "next/navigation";
@@ -32,12 +33,13 @@ function AuthWrapper({ children }) {
 
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} `}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <Header />
-          <main className="container mx-auto p-4">
+          <main className="container mx-auto ">
             {children}
           </main>
+          <Footer/>
 		  <Toaster />
         </ThemeProvider>
       </body>

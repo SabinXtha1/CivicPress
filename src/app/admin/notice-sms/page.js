@@ -7,6 +7,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useAuth } from '@/context/AuthContext';
 import { toast } from 'sonner';
+import { Edit, Trash, Loader2, Plus } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export default function AdminNoticeSmsPage() {
     const { token } = useAuth();
@@ -137,7 +140,54 @@ export default function AdminNoticeSmsPage() {
         }
     };
 
-    if (loading) return <div className="container mx-auto py-8">Loading subscriptions...</div>;
+    if (loading) {
+        return (
+            <div className="container mx-auto py-8">
+                <h1 className="text-3xl font-bold mb-6">Manage Notice SMS Subscriptions</h1>
+                <Card className="mb-8">
+                    <CardHeader>
+                        <Skeleton className="h-6 w-1/2 mb-2" />
+                    </CardHeader>
+                    <CardContent>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+                            <Skeleton className="h-10 w-full" />
+                            <Skeleton className="h-10 w-full" />
+                            <Skeleton className="h-10 w-full" />
+                        </div>
+                    </CardContent>
+                </Card>
+                <Card>
+                    <CardHeader>
+                        <Skeleton className="h-6 w-1/3 mb-2" />
+                    </CardHeader>
+                    <CardContent>
+                        <div className="overflow-x-auto">
+                            <table className="min-w-full divide-y divide-gray-200">
+                                <thead className="bg-gray-50">
+                                    <tr>
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><Skeleton className="h-4 w-3/4" /></th>
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><Skeleton className="h-4 w-3/4" /></th>
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><Skeleton className="h-4 w-3/4" /></th>
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><Skeleton className="h-4 w-3/4" /></th>
+                                    </tr>
+                                </thead>
+                                <tbody className="bg-white divide-y divide-gray-200">
+                                    {[...Array(5)].map((_, i) => (
+                                        <tr key={i}>
+                                            <td className="px-6 py-4 whitespace-nowrap"><Skeleton className="h-4 w-full" /></td>
+                                            <td className="px-6 py-4 whitespace-nowrap"><Skeleton className="h-4 w-full" /></td>
+                                            <td className="px-6 py-4 whitespace-nowrap"><Skeleton className="h-4 w-full" /></td>
+                                            <td className="px-6 py-4 whitespace-nowrap"><Skeleton className="h-4 w-full" /></td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    </CardContent>
+                </Card>
+            </div>
+        );
+    }
     if (error) return <div className="container mx-auto py-8 text-red-500">Error: {error}</div>;
 
     return (
@@ -185,7 +235,11 @@ export default function AdminNoticeSmsPage() {
                             />
                         </div>
                         <Button type="submit" disabled={addingSubscription}>
-                            {addingSubscription ? "Adding..." : "Add Subscription"}
+                            {addingSubscription ? (
+                                <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Adding...</>
+                            ) : (
+                                <><Plus className="mr-2 h-4 w-4" /> Add Subscription</>
+                            )}
                         </Button>
                     </form>
                 </CardContent>
@@ -211,7 +265,12 @@ export default function AdminNoticeSmsPage() {
                                 </thead>
                                 <tbody className="bg-white divide-y divide-gray-200">
                                     {subscriptions.map((sub) => (
-                                        <tr key={sub._id}>
+                                        <motion.tr
+                                            key={sub._id}
+                                            initial={{ opacity: 0, y: 20 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            transition={{ duration: 0.3 }}
+                                        >
                                             {editingId === sub._id ? (
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                                                     <div className="flex items-center gap-2">
@@ -254,16 +313,18 @@ export default function AdminNoticeSmsPage() {
                                                         <Button
                                                             onClick={(e) => handleUpdate(e, sub._id)}
                                                             className="mr-2"
-                                                            size="sm"
+                                                            size="icon"
+                                                            title="Save Changes"
                                                         >
-                                                            Save
+                                                            <Loader2 className="h-4 w-4 animate-spin" />
                                                         </Button>
                                                         <Button
                                                             onClick={() => setEditingId(null)}
                                                             variant="outline"
-                                                            size="sm"
+                                                            size="icon"
+                                                            title="Cancel Edit"
                                                         >
-                                                            Cancel
+                                                            <Trash className="h-4 w-4" />
                                                         </Button>
                                                     </>
                                                 ) : (
@@ -271,21 +332,23 @@ export default function AdminNoticeSmsPage() {
                                                         <Button
                                                             onClick={() => handleEdit(sub)}
                                                             className="mr-2"
-                                                            size="sm"
+                                                            size="icon"
+                                                            title="Edit Subscription"
                                                         >
-                                                            Edit
+                                                            <Edit className="h-4 w-4" />
                                                         </Button>
                                                         <Button
                                                             onClick={() => handleDelete(sub._id)}
                                                             variant="destructive"
-                                                            size="sm"
+                                                            size="icon"
+                                                            title="Delete Subscription"
                                                         >
-                                                            Delete
+                                                            <Trash className="h-4 w-4" />
                                                         </Button>
                                                     </>
                                                 )}
                                             </td>
-                                        </tr>
+                                        </motion.tr>
                                     ))}
                                 </tbody>
                             </table>

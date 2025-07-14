@@ -8,6 +8,9 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Toaster, toast } from 'react-hot-toast';
+import { Plus, Loader2 } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export default function NoticesPage() {
     const [notices, setNotices] = useState([]);
@@ -76,22 +79,53 @@ export default function NoticesPage() {
         }
     };
 
-    if (loading) return <div className="text-center py-8">Loading notices...</div>;
+    if (loading) {
+        return (
+            <div className="space-y-8 p-4 ">
+                <div className="flex justify-between items-center mb-6">
+                    <h1 className="text-4xl font-bold">All Notices</h1>
+                    {(user && user.role === 'admin') && (
+                        <Button size="icon" disabled>
+                            <Plus className="h-4 w-4" />
+                        </Button>
+                    )}
+                </div>
+                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                    {[...Array(6)].map((_, i) => (
+                        <Card key={i}>
+                            <CardHeader>
+                                <Skeleton className="h-6 w-3/4 mb-2" />
+                                <Skeleton className="h-4 w-1/2" />
+                            </CardHeader>
+                            <CardContent>
+                                <Skeleton className="h-48 w-full" />
+                            </CardContent>
+                        </Card>
+                    ))}
+                </div>
+            </div>
+        );
+    }
     if (error) return <div className="text-center py-8 text-red-500">Error: {error}</div>;
 
     return (
-        <div className="space-y-8">
+        <div className="space-y-8 p-4">
             <Toaster position="bottom-right" />
             <div className="flex justify-between items-center mb-6">
                 <h1 className="text-4xl font-bold">All Notices</h1>
                 {(user && user.role === 'admin') && (
                     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                         <DialogTrigger asChild>
-                            <Button>Create New Notice</Button>
+                            <Button size="icon" title="Create New Notice">
+                                <Plus className="h-4 w-4" />
+                            </Button>
                         </DialogTrigger>
                         <DialogContent className="sm:max-w-[425px]">
                             <DialogHeader>
                                 <DialogTitle>Create New Notice</DialogTitle>
+                                <DialogDescription>
+                                    Fill in the details to create a new notice.
+                                </DialogDescription>
                             </DialogHeader>
                             <form onSubmit={handleCreateNotice} className="grid gap-4 py-4">
                                 <div className="grid gap-2">
@@ -123,17 +157,24 @@ export default function NoticesPage() {
             ) : (
                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                     {notices.map((notice) => (
-                        <Card key={notice._id}>
-                            <CardHeader>
-                                <CardTitle >{notice.title}</CardTitle>
-                                <p className="text-sm text-muted-foreground">{new Date(notice.createdAt).toLocaleDateString()}</p>
-                            </CardHeader>
-                            {notice.image && (
-                                <CardContent>
-                                    <img src={notice.image} alt={notice.title} className="w-full h-48 object-cover rounded-md" />
-                                </CardContent>
-                            )}
-                        </Card>
+                        <motion.div
+                            key={notice._id}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.3 }}
+                        >
+                            <Card>
+                                <CardHeader>
+                                    <CardTitle >{notice.title}</CardTitle>
+                                    <p className="text-sm text-muted-foreground">{new Date(notice.createdAt).toLocaleDateString()}</p>
+                                </CardHeader>
+                                {notice.image && (
+                                    <CardContent>
+                                        <img src={notice.image} alt={notice.title} className="w-full h-48 object-cover rounded-md" />
+                                    </CardContent>
+                                )}
+                            </Card>
+                        </motion.div>
                     ))}
                 </div>
             )}
