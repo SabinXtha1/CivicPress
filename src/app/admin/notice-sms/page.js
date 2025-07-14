@@ -80,7 +80,7 @@ export default function AdminNoticeSmsPage() {
 
     const handleEdit = (subscription) => {
         setEditingId(subscription._id);
-        setEditPhoneNumber(subscription.phoneNumber);
+        setEditPhoneNumber(subscription.phoneNumber.startsWith('+977') ? subscription.phoneNumber.substring(4) : subscription.phoneNumber);
         setEditEmail(subscription.email || '');
     };
 

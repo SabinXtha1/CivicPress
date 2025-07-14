@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react"
 import { motion } from "framer-motion"
 import { X } from "lucide-react"
+import "./scroll.css"
 
 export default function NoticeBanner() {
   const [isVisible, setIsVisible] = useState(true)
@@ -37,14 +38,33 @@ export default function NoticeBanner() {
 
   // Create enough duplicates to ensure seamless scrolling
   const duplicatedNotices = Array(6).fill(notices).flat()
+//  const listScroll=()=>{
+//   return (
+//     <div class="slider" style="
+//             --width: 100px;
+//             --height: 50px;
+//             --quantity: 10;
+//         ">
+//             <div class="list">
+//                {duplicatedNotices.map((notice, index) => (
+//               <span key={`${notice.id || notice.title}-${index}`} className={`font-medium mx-8 flex-shrink-0 transition delay-150 duration-300 ease-in-out item [--position:${index}] `}   >
+//                 {notice.title}
+//               </span>
+//             ))}
+//               </div>
+//               </div>
+//   )
+//  }
+
 
   return (
     <>
       {isVisible && (
-        <div ref={containerRef} className="relative bg-indigo-600 px-4 py-3 text-white pr-16  overflow-hidden">
+       
+        <div ref={containerRef} className="relative text-white px-4 py-3 bg-red-600 font-bold font-serif pr-16  overflow-hidden">
           <motion.div
             ref={contentRef}
-            className="flex flex-nowrap whitespace-nowrap "
+            className="flex flex-nowrap whitespace-nowrap justify-center "
             animate={{
               x: [0, -100 / 6 + "%"], // Move by 1/6th since we have 6 duplicates
             }}
@@ -68,7 +88,11 @@ export default function NoticeBanner() {
           >
             <X className="h-4 w-4" />
           </button>
+
+          
         </div>
+        
+        
       )}
     </>
   )

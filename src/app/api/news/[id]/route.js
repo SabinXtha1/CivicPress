@@ -1,6 +1,7 @@
 import { connectDB } from "@/lib/db";
 import { Post } from "@/lib/Schema/UserSchema";
 import { NextResponse } from "next/server";
+import { revalidatePath } from 'next/cache';
 import jwt from "jsonwebtoken";
 
 // Helper function to verify JWT token
@@ -66,6 +67,7 @@ export async function PUT(req, { params }) {
             return NextResponse.json({ message: "Post not found" }, { status: 404 });
         }
 
+        revalidatePath('/posts');
         return NextResponse.json({ message: "Post updated successfully", post: updatedPost }, { status: 200 });
     } catch (error) {
         console.error("Error updating post:", error);
@@ -95,7 +97,7 @@ export async function DELETE(req, { params }) {
         }
 
         await Post.findByIdAndDelete(id);
-
+        revalidatePath('/posts');
         return NextResponse.json({ message: "Post deleted successfully" }, { status: 200 });
     } catch (error) {
         console.error("Error deleting post:", error);

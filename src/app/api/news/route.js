@@ -1,6 +1,7 @@
 import { connectDB } from "@/lib/db";
 import { Post } from "@/lib/Schema/UserSchema";
 import { NextResponse } from "next/server";
+import { revalidatePath } from 'next/cache';
 import jwt from "jsonwebtoken";
 
 // Helper function to verify JWT token
@@ -72,6 +73,7 @@ export async function POST(req) {
             author: decoded.id, // Set author to the ID from the token
         });
 
+        revalidatePath('/posts');
         return NextResponse.json({ message: "Post created successfully", post: newPost }, { status: 201 });
 
     } catch (error) {

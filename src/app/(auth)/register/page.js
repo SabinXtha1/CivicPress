@@ -22,7 +22,7 @@ export default function RegisterPage() {
         e.preventDefault();
         setLoading(true);
         try {
-            await register(username, email, password, phone);
+            await register(username, email, password, `+977${phone}`);
         } finally {
             setLoading(false);
         }

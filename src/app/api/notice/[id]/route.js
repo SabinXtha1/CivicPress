@@ -1,6 +1,7 @@
 import { connectDB } from "@/lib/db";
 import { Notice } from "@/lib/Schema/UserSchema";
 import { NextResponse } from "next/server";
+import { revalidatePath } from 'next/cache';
 import jwt from "jsonwebtoken";
 
 // Helper function to verify JWT token
@@ -60,6 +61,7 @@ export async function PUT(req, { params }) {
             return NextResponse.json({ message: "Notice not found" }, { status: 404 });
         }
 
+        revalidatePath('/notices');
         return NextResponse.json({ message: "Notice updated successfully", notice: updatedNotice }, { status: 200 });
     } catch (error) {
         console.error("Error updating notice:", error);
@@ -87,6 +89,7 @@ export async function DELETE(req, { params }) {
             return NextResponse.json({ message: "Notice not found" }, { status: 404 });
         }
 
+        revalidatePath('/notices');
         return NextResponse.json({ message: "Notice deleted successfully" }, { status: 200 });
     } catch (error) {
         console.error("Error deleting notice:", error);

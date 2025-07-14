@@ -98,6 +98,7 @@ export const AuthProvider = ({ children }) => {
             });
             if (res.ok) {
                 const data = await res.json();
+                console.log("User data from /api/user/me:", data.user); // Add this line
                 setUser(data.user);
             } else {
                 console.error("Failed to refresh user data. Status:", res.status);
