@@ -7,7 +7,7 @@ import { AuthProvider, useAuth } from '../context/AuthContext';
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Home, Newspaper, Bell, User, LogIn, LogOut, UserPlus } from 'lucide-react';
-import Link from 'next/Link'
+
 import { Toaster } from 'react-hot-toast';
 import Header from '@/components/ui/Header';
 
