@@ -129,7 +129,7 @@ export default function NavBar() {
           {/* Logo */}
           <div className="flex items-center">
             <Link href="/" className="text-primary font-bold text-xl hover:text-primary/80 transition-colors">
-              CivicPress
+             Ward-02
             </Link>
           </div>
 
