@@ -69,7 +69,6 @@ export async function POST(req) {
         return NextResponse.json({ message: "User registered successfully", user: newUser }, { status: 201 });
 
     } catch (error) {
-        console.error("Error during user registration:", error);
         return NextResponse.json({ message: "Something went wrong", error: error.message }, { status: 500 });
     }
 }
@@ -90,7 +89,6 @@ export async function GET(req) {
         const users = await User.find().select('-password'); // Exclude password from the results
         return NextResponse.json(users, { status: 200 });
     } catch (error) {
-        console.error("Error fetching users:", error);
         return NextResponse.json({ message: "Something went wrong", error: error.message }, { status: 500 });
     }
 }

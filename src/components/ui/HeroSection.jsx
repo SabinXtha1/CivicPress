@@ -81,7 +81,7 @@ export default function HeroSection() {
 
     return (
         <section className="py-12">
-            <div className="container mx-auto text-red-800">
+            <div className="container flex flex-col justify-between min-h-screen  mx-auto text-red-800 ">
                 <motion.h2 
                     className="text-3xl font-bold mb-8"
                     initial={{ opacity: 0, y: -20 }}
@@ -126,10 +126,11 @@ export default function HeroSection() {
                 </motion.div>
 
                 <motion.div
-                    className="mt-12 p-6 bg-gray-100 rounded-lg shadow-md"
+                    className="mt-12 p-6 bg-gray-100 max-w-3xl mx-auto rounded-lg shadow-md "
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.7 }}
+                    
                 >
                     <h3 className="text-2xl font-bold mb-4 text-gray-800 text-center">Subscribe to Notice SMS</h3>
                     <form onSubmit={handleSubscribe} className="flex flex-col  items-center  gap-4">

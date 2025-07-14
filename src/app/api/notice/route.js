@@ -17,10 +17,8 @@ const verifyToken = (req) => {
     }
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        console.log("Backend: Decoded token:", decoded);
         return { decoded };
     } catch (error) {
-        console.error("Backend: Token verification error:", error);
         return { error: "Invalid or expired token", status: 403 };
     }
 };
@@ -40,7 +38,6 @@ export async function GET(req) {
         const notices = await Notice.find(query).sort({ createdAt: -1 });
         return NextResponse.json(notices, { status: 200 });
     } catch (error) {
-        console.error("Error fetching notices:", error);
         return NextResponse.json({ message: "Something went wrong", error: error.message }, { status: 500 });
     }
 }
@@ -53,7 +50,6 @@ export async function POST(req) {
     }
     const { decoded } = authResult;
 
-    console.log("Backend: Role from decoded token:", decoded.role);
     if (decoded.role !== 'admin') {
         return NextResponse.json({ message: "Forbidden: Only admins can create notices" }, { status: 403 });
     }
@@ -103,7 +99,6 @@ export async function POST(req) {
         return NextResponse.json({ message: "Notice created successfully", notice: newNotice }, { status: 201 });
 
     } catch (error) {
-        console.error("Error creating notice:", error);
         return NextResponse.json({ message: "Something went wrong", error: error.message }, { status: 500 });
     }
 }

@@ -60,7 +60,6 @@ export async function PUT(req, { params }) {
         return NextResponse.json({ message: "Subscription updated successfully", subscription: updatedSubscription }, { status: 200 });
 
     } catch (error) {
-        console.error("Error updating subscription:", error);
         if (error.code === 11000) {
             return NextResponse.json({ message: "Phone number already exists" }, { status: 409 });
         }
@@ -92,7 +91,6 @@ export async function DELETE(req, { params }) {
         return NextResponse.json({ message: "Subscription deleted successfully" }, { status: 200 });
 
     } catch (error) {
-        console.error("Error deleting subscription:", error);
         return NextResponse.json({ message: "Something went wrong", error: error.message }, { status: 500 });
     }
 }

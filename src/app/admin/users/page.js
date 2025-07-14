@@ -5,7 +5,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogDescription } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -28,12 +28,10 @@ export default function AdminUsersPage() {
 
     const fetchUsers = async () => {
         if (!token) {
-            console.log("No token available, skipping fetchUsers.");
             setLoading(false);
             return;
         }
         try {
-            console.log("Attempting to fetch users with token:", token);
             const res = await fetch('/api/user', {
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -45,10 +43,8 @@ export default function AdminUsersPage() {
                 throw new Error(errorData.message || 'Failed to fetch users');
             }
             const data = await res.json();
-            console.log("Successfully fetched users:", data);
             setUsers(data);
         } catch (err) {
-            console.error("Error fetching users:", err);
             setError(err.message);
         } finally {
             setLoading(false);
@@ -109,7 +105,6 @@ export default function AdminUsersPage() {
                 throw new Error(data.message || 'Failed to update user');
             }
         } catch (err) {
-            console.error('Error updating user:', err);
             toast.error(err.message);
         }
     };
@@ -134,7 +129,6 @@ export default function AdminUsersPage() {
                 throw new Error(data.message || 'Failed to delete user');
             }
         } catch (err) {
-            console.error('Error deleting user:', err);
             toast.error(err.message);
         }
     };
@@ -177,6 +171,9 @@ export default function AdminUsersPage() {
                     <DialogContent className="sm:max-w-[425px]">
                         <DialogHeader>
                             <DialogTitle>Edit User</DialogTitle>
+                            <DialogDescription>
+                                Make changes to the user's profile here. Click save when you're done.
+                            </DialogDescription>
                         </DialogHeader>
                         <form onSubmit={handleUpdateUser} className="grid gap-4 py-4">
                             <div className="grid gap-2">

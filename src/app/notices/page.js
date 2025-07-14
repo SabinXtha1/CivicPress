@@ -125,7 +125,7 @@ export default function NoticesPage() {
                     {notices.map((notice) => (
                         <Card key={notice._id}>
                             <CardHeader>
-                                <CardTitle>{notice.title}</CardTitle>
+                                <CardTitle >{notice.title}</CardTitle>
                                 <p className="text-sm text-muted-foreground">{new Date(notice.createdAt).toLocaleDateString()}</p>
                             </CardHeader>
                             {notice.image && (

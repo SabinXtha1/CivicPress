@@ -81,7 +81,6 @@ export default function AdminNoticesPage() {
                 throw new Error(data.message || 'Failed to update notice');
             }
         } catch (err) {
-            console.error('Error updating notice:', err);
             toast.error(err.message);
         }
     };
@@ -108,7 +107,6 @@ export default function AdminNoticesPage() {
                 throw new Error(data.message || 'Failed to create notice');
             }
         } catch (err) {
-            console.error('Error creating notice:', err);
             toast.error(err.message);
         }
     };
@@ -133,7 +131,6 @@ export default function AdminNoticesPage() {
                 throw new Error(data.message || 'Failed to delete notice');
             }
         } catch (err) {
-            console.error('Error deleting notice:', err);
             toast.error(err.message);
         }
     };

@@ -34,7 +34,6 @@ export async function GET(req, { params }) {
 
         return NextResponse.json(notice, { status: 200 });
     } catch (error) {
-        console.error("Error fetching single notice:", error);
         return NextResponse.json({ message: "Something went wrong", error: error.message }, { status: 500 });
     }
 }
@@ -64,7 +63,6 @@ export async function PUT(req, { params }) {
         revalidatePath('/notices');
         return NextResponse.json({ message: "Notice updated successfully", notice: updatedNotice }, { status: 200 });
     } catch (error) {
-        console.error("Error updating notice:", error);
         return NextResponse.json({ message: "Something went wrong", error: error.message }, { status: 500 });
     }
 }
@@ -92,7 +90,6 @@ export async function DELETE(req, { params }) {
         revalidatePath('/notices');
         return NextResponse.json({ message: "Notice deleted successfully" }, { status: 200 });
     } catch (error) {
-        console.error("Error deleting notice:", error);
         return NextResponse.json({ message: "Something went wrong", error: error.message }, { status: 500 });
     }
 }

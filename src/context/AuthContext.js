@@ -18,7 +18,6 @@ export const AuthProvider = ({ children }) => {
                     const decodedToken = JSON.parse(atob(storedToken.split('.')[1]));
                     if (decodedToken.exp * 1000 < Date.now()) {
                         // Token expired
-                        console.log("Token expired, logging out.");
                         logout();
                     } else {
                         setToken(storedToken);
@@ -26,7 +25,6 @@ export const AuthProvider = ({ children }) => {
                         await refreshUser(storedToken);
                     }
                 } catch (e) {
-                    console.error("Error decoding token:", e);
                     logout();
                 } finally {
                     setLoading(false);
@@ -60,7 +58,6 @@ export const AuthProvider = ({ children }) => {
                 throw new Error(data.message || 'Login failed');
             }
         } catch (error) {
-            console.error('Login error:', error);
             toast.error(error.message);
         }
     };
@@ -83,7 +80,6 @@ export const AuthProvider = ({ children }) => {
                 throw new Error(data.message || 'Registration failed');
             }
         } catch (error) {
-            console.error('Registration error:', error);
             toast.error(error.message);
         }
     };
@@ -98,14 +94,12 @@ export const AuthProvider = ({ children }) => {
             });
             if (res.ok) {
                 const data = await res.json();
-                console.log("User data from /api/user/me:", data.user); // Add this line
-                setUser(data.user);
+                setUser(data);
             } else {
                 console.error("Failed to refresh user data. Status:", res.status);
                 logout(); // Log out if user data cannot be refreshed (e.g., token invalid)
             }
         } catch (error) {
-            console.error("Error refreshing user data:", error);
             logout();
         }
     };

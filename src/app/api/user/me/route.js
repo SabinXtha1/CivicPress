@@ -34,9 +34,8 @@ export async function GET(req) {
         if (!user) {
             return NextResponse.json({ message: "User not found" }, { status: 404 });
         }
-        return NextResponse.json({ user }, { status: 200 });
+        return NextResponse.json(user, { status: 200 });
     } catch (error) {
-        console.error("Error fetching user data:", error);
         return NextResponse.json({ message: "Something went wrong", error: error.message }, { status: 500 });
     }
 }
