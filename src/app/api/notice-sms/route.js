@@ -30,6 +30,12 @@ export async function POST(req) {
             return NextResponse.json({ message: "Phone number is required" }, { status: 400 });
         }
 
+        // Validate Nepali phone number format: +977 followed by 10 digits
+        const nepaliPhoneNumberRegex = /^\+977\d{10}$/;
+        if (!nepaliPhoneNumberRegex.test(phoneNumber)) {
+            return NextResponse.json({ message: "Invalid Nepali phone number format. It should be +977XXXXXXXXXX." }, { status: 400 });
+        }
+
         const newSubscription = await NoticeSms.create({
             phoneNumber,
             email,

@@ -11,25 +11,32 @@ export const AuthProvider = ({ children }) => {
     const router = useRouter();
 
     useEffect(() => {
-        const storedToken = localStorage.getItem('token');
-        const storedUser = localStorage.getItem('user');
-        if (storedToken && storedUser) {
-            try {
-                const decodedToken = JSON.parse(atob(storedToken.split('.')[1]));
-                if (decodedToken.exp * 1000 < Date.now()) {
-                    // Token expired
-                    console.log("Token expired, logging out.");
+        const initializeAuth = async () => {
+            const storedToken = localStorage.getItem('token');
+            if (storedToken) {
+                try {
+                    const decodedToken = JSON.parse(atob(storedToken.split('.')[1]));
+                    if (decodedToken.exp * 1000 < Date.now()) {
+                        // Token expired
+                        console.log("Token expired, logging out.");
+                        logout();
+                    } else {
+                        setToken(storedToken);
+                        // Fetch user data from API instead of localStorage
+                        await refreshUser(storedToken);
+                    }
+                } catch (e) {
+                    console.error("Error decoding token:", e);
                     logout();
-                } else {
-                    setToken(storedToken);
-                    setUser(JSON.parse(storedUser));
+                } finally {
+                    setLoading(false);
                 }
-            } catch (e) {
-                console.error("Error decoding token or parsing user data:", e);
-                logout();
+            } else {
+                setLoading(false);
             }
-        }
-        setLoading(false);
+        };
+
+        initializeAuth();
     }, []);
 
     const login = async (email, password) => {
@@ -45,9 +52,9 @@ export const AuthProvider = ({ children }) => {
 
             if (res.ok) {
                 localStorage.setItem('token', data.token);
-                localStorage.setItem('user', JSON.stringify(data.user));
                 setToken(data.token);
-                setUser(data.user);
+                // Fetch user data immediately after login to ensure up-to-date role
+                await refreshUser(data.token);
                 router.push('/'); // Redirect to home page after login
             } else {
                 throw new Error(data.message || 'Login failed');
@@ -81,16 +88,36 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
+    const refreshUser = async (authToken = token) => {
+        if (!authToken) return;
+        try {
+            const res = await fetch('/api/user/me', {
+                headers: {
+                    'Authorization': `Bearer ${authToken}`,
+                },
+            });
+            if (res.ok) {
+                const data = await res.json();
+                setUser(data.user);
+            } else {
+                console.error("Failed to refresh user data. Status:", res.status);
+                logout(); // Log out if user data cannot be refreshed (e.g., token invalid)
+            }
+        } catch (error) {
+            console.error("Error refreshing user data:", error);
+            logout();
+        }
+    };
+
     const logout = () => {
         localStorage.removeItem('token');
-        localStorage.removeItem('user');
         setToken(null);
         setUser(null);
         router.push('/login'); // Redirect to login page after logout
     };
 
     return (
-        <AuthContext.Provider value={{ user, token, loading, login, register, logout }}>
+        <AuthContext.Provider value={{ user, token, loading, login, register, logout, refreshUser }}>
             {children}
         </AuthContext.Provider>
     );

@@ -15,7 +15,7 @@ export default function AdminUsersPage() {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const { user, token } = useAuth();
+    const { user, token, refreshUser } = useAuth();
     const router = useRouter();
 
     const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
@@ -102,6 +102,9 @@ export default function AdminUsersPage() {
                 toast.success('User updated successfully!');
                 setIsEditDialogOpen(false);
                 fetchUsers(); // Refresh list
+                if (currentEditingUser._id === user._id) {
+                    refreshUser(); // Refresh current user's context if their own role was updated
+                }
             } else {
                 throw new Error(data.message || 'Failed to update user');
             }

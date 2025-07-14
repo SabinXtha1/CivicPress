@@ -66,14 +66,26 @@ export default function RegisterPage() {
                             </div>
                             <div className="grid gap-2">
                                 <Label htmlFor="phone">Phone</Label>
-                                <Input
-                                    id="phone"
-                                    type="tel"
-                                    placeholder="+1234567890"
-                                    required
-                                    value={phone}
-                                    onChange={(e) => setPhone(e.target.value)}
-                                />
+                                <div className="flex items-center gap-2">
+                                    <Label className="whitespace-nowrap">+977</Label>
+                                    <Input
+                                        id="phone"
+                                        type="tel"
+                                        placeholder="98XXXXXXXX"
+                                        required
+                                        value={phone}
+                                        onChange={(e) => {
+                                            const value = e.target.value;
+                                            if (/^\d*$/.test(value) && value.length <= 10) {
+                                                setPhone(value);
+                                            }
+                                        }}
+                                        maxLength={10}
+                                        minLength={10}
+                                        pattern="^\d{10}$"
+                                        title="Please enter a 10-digit Nepali phone number (e.g., 98XXXXXXXX)"
+                                    />
+                                </div>
                             </div>
                             <div className="grid gap-2">
                                 <Label htmlFor="password">Password</Label>

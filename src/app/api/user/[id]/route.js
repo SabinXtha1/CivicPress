@@ -65,6 +65,13 @@ export async function PUT(req, { params }) {
         const { id } = params;
         const updates = await req.json();
 
+        if (updates.phone) {
+            const nepaliPhoneNumberRegex = /^\+977\d{10}$/;
+            if (!nepaliPhoneNumberRegex.test(updates.phone)) {
+                return NextResponse.json({ message: "Invalid Nepali phone number format. It should be +977XXXXXXXXXX." }, { status: 400 });
+            }
+        }
+
         if (updates.password) {
             updates.password = await bcrypt.hash(updates.password, 10);
         }

@@ -27,6 +27,16 @@ export async function POST(req) {
     try {
         const { username, email, password, phone } = await req.json();
 
+        if (!phone) {
+            return NextResponse.json({ message: "Phone number is required" }, { status: 400 });
+        }
+
+        // Validate Nepali phone number format: +977 followed by 10 digits
+        const nepaliPhoneNumberRegex = /^\+977\d{10}$/;
+        if (!nepaliPhoneNumberRegex.test(phone)) {
+            return NextResponse.json({ message: "Invalid Nepali phone number format. It should be +977XXXXXXXXXX." }, { status: 400 });
+        }
+
         // Check if user already exists
         const existingUser = await User.findOne({ $or: [{ email }, { username }] });
         if (existingUser) {

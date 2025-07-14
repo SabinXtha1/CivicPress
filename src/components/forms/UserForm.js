@@ -34,7 +34,8 @@ export default function UserForm({ user, onSave, loading }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSave(formData);
+    const phoneToSave = formData.phone.startsWith('+977') ? formData.phone : `+977${formData.phone}`;
+    onSave({ ...formData, phone: phoneToSave });
   };
 
   return (
@@ -69,14 +70,27 @@ export default function UserForm({ user, onSave, loading }) {
       </div>
       <div className="grid gap-2">
         <Label htmlFor="phone">Phone</Label>
-        <Input
-          id="phone"
-          type="text"
-          name="phone"
-          value={formData.phone}
-          onChange={handleChange}
-          required
-        />
+        <div className="flex items-center gap-2">
+            <Label className="whitespace-nowrap">+977</Label>
+            <Input
+                id="phone"
+                type="tel"
+                name="phone"
+                placeholder="98XXXXXXXX"
+                value={formData.phone.startsWith('+977') ? formData.phone.substring(4) : formData.phone}
+                onChange={(e) => {
+                    const value = e.target.value;
+                    if (/^\d*$/.test(value) && value.length <= 10) {
+                        setFormData((prevData) => ({ ...prevData, phone: value }));
+                    }
+                }}
+                required
+                maxLength={10}
+                minLength={10}
+                pattern="^\d{10}$"
+                title="Please enter a 10-digit Nepali phone number (e.g., 98XXXXXXXX)"
+            />
+        </div>
       </div>
       <div className="grid gap-2">
         <Label htmlFor="password">Password</Label>

@@ -51,13 +51,14 @@ export default function AdminNoticeSmsPage() {
         e.preventDefault();
         setAddingSubscription(true);
         try {
+            const formattedPhoneNumber = `+977${newPhoneNumber}`;
             const res = await fetch('/api/notice-sms', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`,
                 },
-                body: JSON.stringify({ phoneNumber: newPhoneNumber, email: newEmail }),
+                body: JSON.stringify({ phoneNumber: formattedPhoneNumber, email: newEmail }),
             });
 
             const data = await res.json();
@@ -86,13 +87,14 @@ export default function AdminNoticeSmsPage() {
     const handleUpdate = async (e, id) => {
         e.preventDefault();
         try {
+            const formattedPhoneNumber = `+977${editPhoneNumber}`;
             const res = await fetch(`/api/notice-sms/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`,
                 },
-                body: JSON.stringify({ phoneNumber: editPhoneNumber, email: editEmail }),
+                body: JSON.stringify({ phoneNumber: formattedPhoneNumber, email: editEmail }),
             });
 
             const data = await res.json();
@@ -150,14 +152,27 @@ export default function AdminNoticeSmsPage() {
                     <form onSubmit={handleAddSubscription} className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
                         <div className="grid gap-2">
                             <Label htmlFor="newPhoneNumber">Phone Number</Label>
-                            <Input
-                                id="newPhoneNumber"
-                                type="tel"
-                                placeholder="+1234567890"
-                                value={newPhoneNumber}
-                                onChange={(e) => setNewPhoneNumber(e.target.value)}
-                                required
-                            />
+                            <div className="flex items-center gap-2">
+                                <Label className="whitespace-nowrap">+977</Label>
+                                <Input
+                                    id="newPhoneNumber"
+                                    type="tel"
+                                    placeholder="98XXXXXXXX"
+                                    value={newPhoneNumber}
+                                    onChange={(e) => {
+                                        const value = e.target.value;
+                                        if (/^\d*$/.test(value) && value.length <= 10) {
+                                            setNewPhoneNumber(value);
+                                        }
+                                    }}
+                                    required
+                                    maxLength={10}
+                                    minLength={10}
+                                    pattern="^\d{10}$"
+                                    title="Please enter a 10-digit Nepali phone number (e.g., 98XXXXXXXX)"
+                                />
+                            </div>
+                            <p className="text-sm text-gray-500 mt-1">Enter 10-digit Nepali number (e.g., 98XXXXXXXX)</p>
                         </div>
                         <div className="grid gap-2">
                             <Label htmlFor="newEmail">Email (Optional)</Label>
@@ -199,12 +214,24 @@ export default function AdminNoticeSmsPage() {
                                         <tr key={sub._id}>
                                             {editingId === sub._id ? (
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                                    <Input
-                                                        type="tel"
-                                                        value={editPhoneNumber}
-                                                        onChange={(e) => setEditPhoneNumber(e.target.value)}
-                                                        required
-                                                    />
+                                                    <div className="flex items-center gap-2">
+                                                        <Label className="whitespace-nowrap">+977</Label>
+                                                        <Input
+                                                            type="tel"
+                                                            value={editPhoneNumber}
+                                                            onChange={(e) => {
+                                                                const value = e.target.value;
+                                                                if (/^\d*$/.test(value) && value.length <= 10) {
+                                                                    setEditPhoneNumber(value);
+                                                                }
+                                                            }}
+                                                            required
+                                                            maxLength={10}
+                                                            minLength={10}
+                                                            pattern="^\d{10}$"
+                                                            title="Please enter a 10-digit Nepali phone number (e.g., 98XXXXXXXX)"
+                                                        />
+                                                    </div>
                                                 </td>
                                             ) : (
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{sub.phoneNumber}</td>
