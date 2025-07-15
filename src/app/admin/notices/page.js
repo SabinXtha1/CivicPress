@@ -26,6 +26,7 @@ export default function AdminNoticesPage() {
     const [editTitle, setEditTitle] = useState('');
     const [editImage, setEditImage] = useState('');
     const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const fetchNotices = async () => {
         if (!token) return;
@@ -59,6 +60,7 @@ export default function AdminNoticesPage() {
     const handleUpdateNotice = async (e) => {
         e.preventDefault();
         if (!currentEditingNotice || !token) return;
+        setIsSubmitting(true);
 
         try {
             const updates = {
@@ -85,11 +87,14 @@ export default function AdminNoticesPage() {
             }
         } catch (err) {
             toast.error(err.message);
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
     const handleCreateNotice = async (formData) => {
         if (!token) return;
+        setIsSubmitting(true);
 
         try {
             const res = await fetch('/api/notice', {
@@ -111,6 +116,8 @@ export default function AdminNoticesPage() {
             }
         } catch (err) {
             toast.error(err.message);
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
@@ -190,7 +197,7 @@ export default function AdminNoticesPage() {
                                 Fill in the details to create a new notice.
                             </DialogDescription>
                         </DialogHeader>
-                        <NoticeForm onSave={handleCreateNotice} />
+                        <NoticeForm onSave={handleCreateNotice} loading={isSubmitting} />
                     </DialogContent>
                 </Dialog>
             </div>
@@ -257,7 +264,9 @@ export default function AdminNoticesPage() {
                                 />
                             </div>
                             <DialogFooter>
-                                <Button type="submit">Save changes</Button>
+                                <Button type="submit" disabled={isSubmitting}>
+                                    {isSubmitting ? <Loader2 className="h-4 w-4 animate-spin" /> : "Save changes"}
+                                </Button>
                             </DialogFooter>
                         </form>
                     </DialogContent>

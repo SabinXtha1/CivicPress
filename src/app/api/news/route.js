@@ -29,7 +29,7 @@ export async function GET(req) {
         const authorId = searchParams.get('authorId');
 
         let query = {};
-        if (authorId) {
+        if (authorId && authorId !== 'undefined') {
             const authResult = verifyToken(req);
             if (authResult.error) {
                 return NextResponse.json({ message: authResult.error }, { status: authResult.status });

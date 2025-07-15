@@ -21,6 +21,7 @@ export default function NoticesPage() {
     const [newNoticeTitle, setNewNoticeTitle] = useState('');
     const [newNoticeImage, setNewNoticeImage] = useState('');
     const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const fetchNotices = async () => {
         try {
@@ -50,6 +51,8 @@ export default function NoticesPage() {
             return;
         }
 
+        setIsSubmitting(true);
+
         try {
             const res = await fetch('/api/notice', {
                 method: 'POST',
@@ -76,6 +79,8 @@ export default function NoticesPage() {
         } catch (err) {
             console.error('Error creating notice:', err);
             toast.error(err.message);
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
@@ -145,7 +150,9 @@ export default function NoticesPage() {
                                         onChange={(e) => setNewNoticeImage(e.target.value)}
                                     />
                                 </div>
-                                <Button type="submit">Create Notice</Button>
+                                <Button type="submit" disabled={isSubmitting}>
+                                    {isSubmitting ? <Loader2 className="h-4 w-4 animate-spin" /> : "Create Notice"}
+                                </Button>
                             </form>
                         </DialogContent>
                     </Dialog>

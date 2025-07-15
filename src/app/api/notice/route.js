@@ -79,13 +79,25 @@ export async function POST(req) {
                 from: process.env.EMAIL_USER,
                 to: emailList.join(", "), // Send to all collected emails
                 subject: `New Notice: ${title}`,
-                html: `<p>Dear User,</p>
-                       <p>A new notice has been published:</p>
-                       <h3 style="color:red;" >${title}</h3>
-                       ${image ? `<img src="${image}" alt="Notice Image" style="max-width: 100%; height: auto;">` : ""}
-                       <p>Please visit our website to view the full notice.</p>
-                       <p>Regards,<br>Ward News Team</p>`,
+                html: `
+    <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+      <p>Dear User,</p>
+      <p>A new notice has been published:</p>
+      <h3 style="color: #e63946; font-size: 24px; margin: 10px 0;">${title}</h3>
+      ${image ? `
+        <div style="margin: 15px 0;">
+          <img src="${image}" alt="Notice Image" style="max-width: 100%; height: auto; border-radius: 8px;" />
+        </div>
+      ` : ""}
+      <p>
+        Please visit our website to view the full notice. <br/>
+        <a href="https://ward-2.vercel.app/" style="color: #1d3557; text-decoration: none;">Click Here</a>
+      </p>
+      <p>Regards,<br><strong>Ward News Team</strong></p>
+    </div>
+  `,
             };
+
 
             try {
                 await transporter.sendMail(mailOptions);
