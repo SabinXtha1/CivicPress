@@ -152,7 +152,7 @@ export default function AdminNoticesPage() {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-gray-100 dark:bg-gray-900 py-8">
+            <div className="min-h-screen bg-gray-100 dark:bg-gray-900 p-8">
                 <div className="container mx-auto">
                     <div className="flex justify-between items-center mb-6">
                         <h1 className="text-4xl font-bold">Manage Notices</h1>
@@ -183,7 +183,7 @@ export default function AdminNoticesPage() {
     }
 
     return (
-        <div className="min-h-screen bg-gray-100 dark:bg-gray-900 py-8">
+        <div className="min-h-screen bg-gray-100 dark:bg-gray-900 p-8">
             <ToastContainer position="bottom-right" autoClose={5000} hideProgressBar={false} />
             <div className="container mx-auto">
                 <div className="flex justify-between items-center mb-6">
@@ -277,5 +277,7 @@ export default function AdminNoticesPage() {
                 </Dialog>
             )}
         </div>
+        </div>
+
     );
 }

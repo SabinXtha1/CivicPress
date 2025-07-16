@@ -124,7 +124,7 @@ export default function HeroSection() {
               Recent Posts
             </motion.h2>
 
-            <AnimatePresence mode="wait">
+           
               {loading ? (
                 <motion.div
                   key="loading"
@@ -187,7 +187,7 @@ export default function HeroSection() {
                   ))}
                 </motion.div>
               )}
-            </AnimatePresence>
+          
 
             <motion.div
               className="text-center"

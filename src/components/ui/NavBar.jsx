@@ -108,13 +108,24 @@ export default function NavBar() {
           </Button>
           <Button
             variant={isActiveRoute("/posts/my-posts") ? "default" : "ghost"}
+            size="sm"
             asChild
-            onClick={closeSheet}
-            className={`justify-start ${isActiveRoute("/posts/my-posts") ? "bg-primary text-primary-foreground" : ""}`}
+            className={isActiveRoute("/posts/my-posts") ? "bg-primary text-primary-foreground" : ""}
           >
-            <Link href="/posts/my-posts" className="justify-start">
+            <Link href="/posts/my-posts">
               <FileText className="mr-2 h-4 w-4" />
               My Posts
+            </Link>
+          </Button>
+          <Button
+            variant={isActiveRoute("/account") ? "default" : "ghost"}
+            size="sm"
+            asChild
+            className={isActiveRoute("/account") ? "bg-primary text-primary-foreground" : ""}
+          >
+            <Link href="/account">
+              <User className="mr-2 h-4 w-4" />
+              Profile
             </Link>
           </Button>
         </>
@@ -219,6 +230,17 @@ export default function NavBar() {
                     My Posts
                   </Link>
                 </Button>
+                <Button
+                  variant={isActiveRoute("/account") ? "default" : "ghost"}
+                  size="sm"
+                  asChild
+                  className={isActiveRoute("/account") ? "bg-primary text-primary-foreground" : ""}
+                >
+                  <Link href="/account">
+                    <User className="mr-2 h-4 w-4" />
+                    Profile
+                  </Link>
+                </Button>
               </>
             )}
           </div>
@@ -269,7 +291,17 @@ export default function NavBar() {
                       <p className="text-sm text-center font-bold text-green-400">
                         Welcome, <span className="font-bold text-foreground ">{user.username.toUpperCase()}</span>
                       </p>
-                      
+                      <Button
+                        variant={isActiveRoute("/account") ? "default" : "ghost"}
+                        asChild
+                        onClick={closeSheet}
+                        className={`justify-start w-full mt-2 ${isActiveRoute("/account") ? "bg-primary text-primary-foreground" : ""}`}
+                      >
+                        <Link href="/account">
+                          <User className="mr-2 h-4 w-4" />
+                          Profile
+                        </Link>
+                      </Button>
                     </div>
                   )}
 

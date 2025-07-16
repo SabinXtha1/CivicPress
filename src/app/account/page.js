@@ -127,7 +127,7 @@ export default function AccountPage() {
     }
 
     return (
-        <div className="min-h-screen bg-gray-100 dark:bg-gray-900 py-8">
+        <div className="min-h-screen bg-gray-100 dark:bg-gray-900 p-8">
             <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} />
             <div className="container mx-auto">
                 <h1 className="text-3xl font-bold mb-6">My Account</h1>
@@ -220,7 +220,8 @@ export default function AccountPage() {
                         </Button>
                     </CardContent>
                 </Card>
-            </div>
+           
+            </div> </div>
         </div>
-    );
+    )
 }

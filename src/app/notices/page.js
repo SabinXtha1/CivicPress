@@ -87,7 +87,7 @@ export default function NoticesPage() {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-gray-100 dark:bg-gray-900 py-8">
+            <div className="min-h-screen bg-gray-100 dark:bg-gray-900 p-8 px-6">
                 <div className="container mx-auto">
                     <div className="flex justify-between items-center mb-6">
                         <h1 className="text-4xl font-bold">All Notices</h1>
@@ -117,50 +117,52 @@ export default function NoticesPage() {
     if (error) return <div className="text-center py-8 text-red-500">Error: {error}</div>;
 
     return (
-        <div className="min-h-screen bg-gray-100 dark:bg-gray-900 py-8">
+        <div className="min-h-screen bg-gray-100 dark:bg-gray-900 p-8">
             <ToastContainer position="bottom-right" autoClose={5000} hideProgressBar={false} />
             <div className="container mx-auto">
                 <div className="flex justify-between items-center mb-6">
                     <h1 className="text-4xl font-bold">All Notices</h1>
                     {(user && user.role === 'admin') && (
-                        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                            <DialogTrigger asChild>
-                                <Button size="icon" title="Create New Notice">
-                                    <Plus className="h-4 w-4" />
-                                </Button>
-                            </DialogTrigger>
-                            <DialogContent className="sm:max-w-[425px] bg-white dark:bg-gray-950">
-                                <DialogHeader>
-                                    <DialogTitle>Create New Notice</DialogTitle>
-                                    <DialogDescription>
-                                        Fill in the details to create a new notice.
-                                    </DialogDescription>
-                                </DialogHeader>
-                                <form onSubmit={handleCreateNotice} className="grid gap-4 py-4">
-                                    <div className="grid gap-2">
-                                        <Label htmlFor="title">Title</Label>
-                                        <Input
-                                            id="title"
-                                            value={newNoticeTitle}
-                                            onChange={(e) => setNewNoticeTitle(e.target.value)}
-                                            required
-                                        />
-                                    </div>
-                                    <div className="grid gap-2">
-                                        <Label htmlFor="image">Image URL</Label>
-                                        <Input
-                                            id="image"
-                                            value={newNoticeImage}
-                                            onChange={(e) => setNewNoticeImage(e.target.value)}
-                                        />
-                                    </div>
-                                    <Button type="submit" disabled={isSubmitting}>
-                                        {isSubmitting ? <Loader2 className="h-4 w-4 animate-spin" /> : "Create Notice"}
-                                    </Button>
-                                </form>
-                            </DialogContent>
-                        </Dialog>
+                        <Button size="icon" title="Create New Notice" onClick={() => setIsDialogOpen(true)}>
+                            <Plus className="h-4 w-4" />
+                        </Button>
                     )}
+                </div>
+
+            {(user && user.role === 'admin') && (
+                <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                    <DialogContent className="sm:max-w-[425px] bg-white dark:bg-gray-950">
+                        <DialogHeader>
+                            <DialogTitle>Create New Notice</DialogTitle>
+                            <DialogDescription>
+                                Fill in the details to create a new notice.
+                            </DialogDescription>
+                        </DialogHeader>
+                        <form onSubmit={handleCreateNotice} className="grid gap-4 py-4">
+                            <div className="grid gap-2">
+                                <Label htmlFor="title">Title</Label>
+                                <Input
+                                    id="title"
+                                    value={newNoticeTitle}
+                                    onChange={(e) => setNewNoticeTitle(e.target.value)}
+                                    required
+                                />
+                            </div>
+                            <div className="grid gap-2">
+                                <Label htmlFor="image">Image URL</Label>
+                                <Input
+                                    id="image"
+                                    value={newNoticeImage}
+                                    onChange={(e) => setNewNoticeImage(e.target.value)}
+                                />
+                            </div>
+                            <Button type="submit" disabled={isSubmitting}>
+                                {isSubmitting ? <Loader2 className="h-4 w-4 animate-spin" /> : "Create Notice"}
+                            </Button>
+                        </form>
+                    </DialogContent>
+                </Dialog>
+            )}
                 </div>
 
             {notices.length === 0 ? (

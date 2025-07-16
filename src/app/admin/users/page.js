@@ -210,6 +210,7 @@ export default function AdminUsersPage() {
                     ))}
                 </div>
             )}
+            </div>
 
             {currentEditingUser && (
                 <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>

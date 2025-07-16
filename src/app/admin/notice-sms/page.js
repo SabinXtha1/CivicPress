@@ -304,7 +304,7 @@ export default function AdminNoticeSmsPage() {
                                                     <Input
                                                         type="email"
                                                         value={editEmail}
-                                                        onChange={(e) => setEditEmail(e.targe.value)}
+                                                        onChange={(e) => setEditEmail(e.target.value)}
                                                         required
                                                     />
                                                 </td>
