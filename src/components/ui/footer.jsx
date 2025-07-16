@@ -83,7 +83,7 @@ export default function Footer({ className = "" }) {
     <footer className={`bg-black text-white ${className}`}>
       {/* Newsletter Subscription Section */}
       <motion.div
-        className="bg-gray-900 py-12 border-b border-gray-800"
+        className="bg-gray-900 rounded-x-[20px] py-12 border-y border-white border-b-[0.5px] "
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}

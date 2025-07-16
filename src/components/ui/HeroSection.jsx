@@ -158,7 +158,7 @@ export default function HeroSection() {
                   {posts.map((post, index) => (
                     <motion.div key={post._id} variants={itemVariants} whileHover="hover">
                       <motion.div variants={cardHoverVariants}>
-                        <Card className="hover:shadow-xl transition-shadow duration-300 border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 h-full">
+                        <Card className="hover:shadow-xl transition-shadow duration-300 border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 h-[296px]">
                           <CardHeader>
                             <CardTitle className="text-lg font-semibold text-gray-900 dark:text-gray-100 line-clamp-2 flex items-start gap-2">
                               <Calendar className="h-4 w-4 mt-1 text-gray-500 dark:text-gray-400 flex-shrink-0" />

@@ -143,7 +143,7 @@ export default function AdminNoticeSmsPage() {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-gray-100 dark:bg-gray-900 py-8">
+            <div className="min-h-screen bg-gray-100 dark:bg-gray-900 p-8">
                 <div className="container mx-auto">
                     <h1 className="text-3xl font-bold mb-6">Manage Notice SMS Subscriptions</h1>
                     <Card className="mb-8 bg-white dark:bg-gray-950">
@@ -194,7 +194,7 @@ export default function AdminNoticeSmsPage() {
     if (error) return <div className="container mx-auto py-8 text-red-500">Error: {error}</div>;
 
     return (
-        <div className="min-h-screen bg-gray-100 dark:bg-gray-900 py-8">
+        <div className="min-h-screen bg-gray-100 dark:bg-gray-900 p-8">
             <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} />
             <div className="container mx-auto">
                 <h1 className="text-3xl font-bold mb-6">Manage Notice SMS Subscriptions</h1>
@@ -204,7 +204,7 @@ export default function AdminNoticeSmsPage() {
                         <CardTitle>Add New Subscription</CardTitle>
                     </CardHeader>
                 <CardContent>
-                    <form onSubmit={handleAddSubscription} className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+                    <form onSubmit={handleAddSubscription} className="grid grid-cols-1 md:grid-cols-3 gap-4 items-start">
                         <div className="grid gap-2">
                             <Label htmlFor="newPhoneNumber">Phone Number (Optional)</Label>
                             <div className="flex items-center gap-2">
@@ -239,6 +239,9 @@ export default function AdminNoticeSmsPage() {
                                 required
                             />
                         </div>
+                        <div className="py-5">
+
+
                         <Button type="submit" disabled={addingSubscription}>
                             {addingSubscription ? (
                                 <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Adding...</>
@@ -246,6 +249,7 @@ export default function AdminNoticeSmsPage() {
                                 <><Plus className="mr-2 h-4 w-4" /> Add Subscription</>
                             )}
                         </Button>
+                            </div>
                     </form>
                 </CardContent>
             </Card>
@@ -361,6 +365,7 @@ export default function AdminNoticeSmsPage() {
                     )}
                 </CardContent>
             </Card>
+        </div>
         </div>
     );
 }

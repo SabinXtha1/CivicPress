@@ -79,23 +79,34 @@ export async function POST(req) {
                 from: process.env.EMAIL_USER,
                 to: emailList.join(", "), // Send to all collected emails
                 subject: `New Notice: ${title}`,
-                html: `
-    <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
-      <p>Dear User,</p>
-      <p>A new notice has been published:</p>
-      <h3 style="color: #e63946; font-size: 24px; margin: 10px 0;">${title}</h3>
-      ${image ? `
-        <div style="margin: 15px 0;">
-          <img src="${image}" alt="Notice Image" style="max-width: 100%; height: auto; border-radius: 8px;" />
-        </div>
-      ` : ""}
-      <p>
-        Please visit our website to view the full notice. <br/>
-        <a href="https://ward-2.vercel.app/" style="color: #1d3557; text-decoration: none;">Click Here</a>
-      </p>
-      <p>Regards,<br><strong>Ward News Team</strong></p>
+     html: `
+  <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: auto; padding: 20px; background-color: #ffffff; border: 1px solid #ddd; border-radius: 8px;">
+    
+    <p style="font-size: 16px;">Dear User,</p>
+    <p style="font-size: 16px;">A new notice has been published:</p>
+
+    <h2 style="color: #e63946; font-size: 28px; margin: 20px 0; text-align: center;">${title}</h2>
+
+    ${image ? `
+      <div style="margin: 20px 0; text-align: center;">
+        <img src="${image}" alt="Notice Image" style="max-width: 100%; height: auto; border-radius: 8px;" />
+      </div>
+    ` : ''}
+
+    <div style="display: flex; align-items: center; margin: 20px 0;">
+      <img src="https://ward-2.vercel.app/devchuli-2.png" alt="Location Icon" style="width: 40px; height: 40px; margin-right: 10px;" />
+      <p style="margin: 0; font-size: 16px;">देवचुली २, नवलपुर</p>
     </div>
-  `,
+
+    <p style="font-size: 16px;">
+      Please visit our website to view the full notice. <br/>
+      <a href="https://ward-2.vercel.app/" style="color: #1d3557; text-decoration: none; font-weight: bold;">Click Here</a>
+    </p>
+
+    <p style="margin-top: 40px; font-size: 16px;">Regards,<br><strong>Ward News Team</strong></p>
+  </div>
+`
+
             };
 
 
