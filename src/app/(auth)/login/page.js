@@ -60,6 +60,9 @@ export default function LoginPage() {
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                 />
+                                <Link href="/forgot-password" legacyBehavior>
+                                    <a className="text-sm text-right underline">Forgot Password?</a>
+                                </Link>
                             </div>
                             <Button type="submit" className="w-full" disabled={loading}>
                                 {loading ? (

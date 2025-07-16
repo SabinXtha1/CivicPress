@@ -201,7 +201,7 @@ export default function AdminNoticeSmsPage() {
                 <CardContent>
                     <form onSubmit={handleAddSubscription} className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
                         <div className="grid gap-2">
-                            <Label htmlFor="newPhoneNumber">Phone Number</Label>
+                            <Label htmlFor="newPhoneNumber">Phone Number (Optional)</Label>
                             <div className="flex items-center gap-2">
                                 <Label className="whitespace-nowrap">+977</Label>
                                 <Input
@@ -215,7 +215,6 @@ export default function AdminNoticeSmsPage() {
                                             setNewPhoneNumber(value);
                                         }
                                     }}
-                                    required
                                     maxLength={10}
                                     minLength={10}
                                     pattern="^\d{10}$"
@@ -225,13 +224,14 @@ export default function AdminNoticeSmsPage() {
                             <p className="text-sm text-gray-500 mt-1">Enter 10-digit Nepali number (e.g., 98XXXXXXXX)</p>
                         </div>
                         <div className="grid gap-2">
-                            <Label htmlFor="newEmail">Email (Optional)</Label>
+                            <Label htmlFor="newEmail">Email</Label>
                             <Input
                                 id="newEmail"
                                 type="email"
                                 placeholder="example@example.com"
                                 value={newEmail}
                                 onChange={(e) => setNewEmail(e.target.value)}
+                                required
                             />
                         </div>
                         <Button type="submit" disabled={addingSubscription}>
@@ -284,7 +284,6 @@ export default function AdminNoticeSmsPage() {
                                                                     setEditPhoneNumber(value);
                                                                 }
                                                             }}
-                                                            required
                                                             maxLength={10}
                                                             minLength={10}
                                                             pattern="^\d{10}$"
@@ -300,7 +299,8 @@ export default function AdminNoticeSmsPage() {
                                                     <Input
                                                         type="email"
                                                         value={editEmail}
-                                                        onChange={(e) => setEditEmail(e.target.value)}
+                                                        onChange={(e) => setEditEmail(e.targe.value)}
+                                                        required
                                                     />
                                                 </td>
                                             ) : (

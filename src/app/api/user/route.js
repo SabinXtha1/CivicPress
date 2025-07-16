@@ -52,7 +52,8 @@ export async function POST(req) {
             email,
             password: hashedPassword,
             phone,
-            
+            resetPasswordToken: undefined,
+            resetPasswordExpires: undefined,
         });
 
         // Attempt to create a NoticeSms entry for the new user

@@ -28,6 +28,14 @@ const userSchema = new Schema({
         type: String,
         enum: ['user', 'admin', 'editor'],
         default: 'user'
+    },
+    resetPasswordToken: {
+        type: String,
+        default: undefined
+    },
+    resetPasswordExpires: {
+        type: Date,
+        default: undefined
     }
 }, { timestamps: true });
 
@@ -95,15 +103,14 @@ const noticeSchema = new Schema({
 const noticeSmsSchema = new Schema({
     phoneNumber: {
         type: String,
-        required: true,
-        unique: true,
         trim: true
     },
     email: {
         type: String,
+        required: true,
+        unique: true,
         trim: true,
-        match: [/.+\@.+\..+/, "Please fill a valid email address"],
-        sparse: true // Allows null values to not violate unique constraint if email was unique
+        match: [/.+\@.+\..+/, "Please fill a valid email address"]
     }
 }, { timestamps: true });
 
