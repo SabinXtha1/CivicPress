@@ -6,7 +6,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useAuth } from '@/context/AuthContext';
-import { toast } from 'sonner';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { Edit, Trash, Loader2, Plus } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -142,62 +143,66 @@ export default function AdminNoticeSmsPage() {
 
     if (loading) {
         return (
-            <div className="container mx-auto py-8 px-8">
-                <h1 className="text-3xl font-bold mb-6">Manage Notice SMS Subscriptions</h1>
-                <Card className="mb-8">
-                    <CardHeader>
-                        <Skeleton className="h-6 w-1/2 mb-2" />
-                    </CardHeader>
-                    <CardContent>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
-                            <Skeleton className="h-10 w-full" />
-                            <Skeleton className="h-10 w-full" />
-                            <Skeleton className="h-10 w-full" />
-                        </div>
-                    </CardContent>
-                </Card>
-                <Card>
-                    <CardHeader>
-                        <Skeleton className="h-6 w-1/3 mb-2" />
-                    </CardHeader>
-                    <CardContent>
-                        <div className="overflow-x-auto">
-                            <table className="min-w-full divide-y divide-gray-200">
-                                <thead className="bg-gray-50">
-                                    <tr>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><Skeleton className="h-4 w-3/4" /></th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><Skeleton className="h-4 w-3/4" /></th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><Skeleton className="h-4 w-3/4" /></th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><Skeleton className="h-4 w-3/4" /></th>
-                                    </tr>
-                                </thead>
-                                <tbody className="bg-white divide-y divide-gray-200">
-                                    {[...Array(5)].map((_, i) => (
-                                        <tr key={i}>
-                                            <td className="px-6 py-4 whitespace-nowrap"><Skeleton className="h-4 w-full" /></td>
-                                            <td className="px-6 py-4 whitespace-nowrap"><Skeleton className="h-4 w-full" /></td>
-                                            <td className="px-6 py-4 whitespace-nowrap"><Skeleton className="h-4 w-full" /></td>
-                                            <td className="px-6 py-4 whitespace-nowrap"><Skeleton className="h-4 w-full" /></td>
+            <div className="min-h-screen bg-gray-100 dark:bg-gray-900 py-8">
+                <div className="container mx-auto">
+                    <h1 className="text-3xl font-bold mb-6">Manage Notice SMS Subscriptions</h1>
+                    <Card className="mb-8 bg-white dark:bg-gray-950">
+                        <CardHeader>
+                            <Skeleton className="h-6 w-1/2 mb-2" />
+                        </CardHeader>
+                        <CardContent>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+                                <Skeleton className="h-10 w-full" />
+                                <Skeleton className="h-10 w-full" />
+                                <Skeleton className="h-10 w-full" />
+                            </div>
+                        </CardContent>
+                    </Card>
+                    <Card className="bg-white dark:bg-gray-950">
+                        <CardHeader>
+                            <Skeleton className="h-6 w-1/3 mb-2" />
+                        </CardHeader>
+                        <CardContent>
+                            <div className="overflow-x-auto">
+                                <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                                    <thead className="bg-gray-50 dark:bg-gray-800">
+                                        <tr>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"><Skeleton className="h-4 w-3/4" /></th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"><Skeleton className="h-4 w-3/4" /></th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"><Skeleton className="h-4 w-3/4" /></th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"><Skeleton className="h-4 w-3/4" /></th>
                                         </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
-                    </CardContent>
-                </Card>
+                                    </thead>
+                                    <tbody className="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-700">
+                                        {[...Array(5)].map((_, i) => (
+                                            <tr key={i}>
+                                                <td className="px-6 py-4 whitespace-nowrap"><Skeleton className="h-4 w-full" /></td>
+                                                <td className="px-6 py-4 whitespace-nowrap"><Skeleton className="h-4 w-full" /></td>
+                                                <td className="px-6 py-4 whitespace-nowrap"><Skeleton className="h-4 w-full" /></td>
+                                                <td className="px-6 py-4 whitespace-nowrap"><Skeleton className="h-4 w-full" /></td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </CardContent>
+                    </Card>
+                </div>
             </div>
         );
     }
     if (error) return <div className="container mx-auto py-8 text-red-500">Error: {error}</div>;
 
     return (
-        <div className="container mx-auto py-8">
-            <h1 className="text-3xl font-bold mb-6">Manage Notice SMS Subscriptions</h1>
+        <div className="min-h-screen bg-gray-100 dark:bg-gray-900 py-8">
+            <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} />
+            <div className="container mx-auto">
+                <h1 className="text-3xl font-bold mb-6">Manage Notice SMS Subscriptions</h1>
 
-            <Card className="mb-8">
-                <CardHeader>
-                    <CardTitle>Add New Subscription</CardTitle>
-                </CardHeader>
+                <Card className="mb-8 bg-white dark:bg-gray-950">
+                    <CardHeader>
+                        <CardTitle>Add New Subscription</CardTitle>
+                    </CardHeader>
                 <CardContent>
                     <form onSubmit={handleAddSubscription} className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
                         <div className="grid gap-2">
@@ -245,7 +250,7 @@ export default function AdminNoticeSmsPage() {
                 </CardContent>
             </Card>
 
-            <Card>
+            <Card className="bg-white dark:bg-gray-950">
                 <CardHeader>
                     <CardTitle>Existing Subscriptions</CardTitle>
                 </CardHeader>
@@ -254,16 +259,16 @@ export default function AdminNoticeSmsPage() {
                         <p>No subscriptions found.</p>
                     ) : (
                         <div className="overflow-x-auto">
-                            <table className="min-w-full divide-y divide-gray-200">
-                                <thead className="bg-gray-50">
+                            <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                                <thead className="bg-gray-50 dark:bg-gray-800">
                                     <tr>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Phone Number</th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Subscribed At</th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Phone Number</th>
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Email</th>
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Subscribed At</th>
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody className="bg-white divide-y divide-gray-200">
+                                <tbody className="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-700">
                                     {subscriptions.map((sub) => (
                                         <motion.tr
                                             key={sub._id}
@@ -272,7 +277,7 @@ export default function AdminNoticeSmsPage() {
                                             transition={{ duration: 0.3 }}
                                         >
                                             {editingId === sub._id ? (
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">
                                                     <div className="flex items-center gap-2">
                                                         <Label className="whitespace-nowrap">+977</Label>
                                                         <Input
@@ -292,10 +297,10 @@ export default function AdminNoticeSmsPage() {
                                                     </div>
                                                 </td>
                                             ) : (
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{sub.phoneNumber}</td>
+                                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">{sub.phoneNumber}</td>
                                             )}
                                             {editingId === sub._id ? (
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                                                     <Input
                                                         type="email"
                                                         value={editEmail}
@@ -304,9 +309,9 @@ export default function AdminNoticeSmsPage() {
                                                     />
                                                 </td>
                                             ) : (
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{sub.email || 'N/A'}</td>
+                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{sub.email || 'N/A'}</td>
                                             )}
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{new Date(sub.createdAt).toLocaleString()}</td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{new Date(sub.createdAt).toLocaleString()}</td>
                                             <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                                 {editingId === sub._id ? (
                                                     <>

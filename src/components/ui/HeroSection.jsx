@@ -74,14 +74,14 @@ export default function HeroSection() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-white">
+    <div className="min-h-screen flex flex-col">
       {/* Main Content */}
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="bg-gradient-to-r from-gray-50 to-white py-16 border-b border-gray-200">
+        <section className="py-16 border-b border-gray-200 dark:border-gray-800">
           <div className="container mx-auto px-4 text-center">
             <motion.h1
-              className="text-4xl md:text-6xl font-bold text-black mb-6"
+              className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-gray-100 mb-6"
               initial={{ opacity: 0, y: -30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
@@ -89,7 +89,7 @@ export default function HeroSection() {
               Stay Informed
             </motion.h1>
             <motion.p
-              className="text-xl text-gray-700 mb-8 max-w-2xl mx-auto"
+              className="text-xl text-gray-700 dark:text-gray-300 mb-8 max-w-2xl mx-auto"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
@@ -112,10 +112,10 @@ export default function HeroSection() {
         </section>
 
         {/* Recent Posts Section */}
-        <section className="py-16 bg-white">
+        <section className="py-16">
           <div className="container mx-auto px-4">
             <motion.h2
-              className="text-3xl font-bold text-center mb-12 text-black"
+              className="text-3xl font-bold text-center mb-12 text-gray-900 dark:text-gray-100"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -158,21 +158,21 @@ export default function HeroSection() {
                   {posts.map((post, index) => (
                     <motion.div key={post._id} variants={itemVariants} whileHover="hover">
                       <motion.div variants={cardHoverVariants}>
-                        <Card className="hover:shadow-xl transition-shadow duration-300 border-gray-200 bg-white h-full">
+                        <Card className="hover:shadow-xl transition-shadow duration-300 border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 h-full">
                           <CardHeader>
-                            <CardTitle className="text-lg font-semibold text-black line-clamp-2 flex items-start gap-2">
-                              <Calendar className="h-4 w-4 mt-1 text-gray-500 flex-shrink-0" />
+                            <CardTitle className="text-lg font-semibold text-gray-900 dark:text-gray-100 line-clamp-2 flex items-start gap-2">
+                              <Calendar className="h-4 w-4 mt-1 text-gray-500 dark:text-gray-400 flex-shrink-0" />
                               {post.title}
                             </CardTitle>
                           </CardHeader>
                           <CardContent>
-                            <p className="text-gray-600 line-clamp-3">{post.content.substring(0, 150)}...</p>
+                            <p className="text-gray-600 dark:text-gray-300 line-clamp-3">{post.content.substring(0, 150)}...</p>
                           </CardContent>
                           <CardFooter>
                             <Button
                               asChild
                               variant="outline"
-                              className="w-full border-gray-300 text-black hover:bg-gray-50 bg-transparent group"
+                              className="w-full border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800 bg-transparent group"
                             >
                               <Link href={`/posts/${post._id}`}>
                                 <Eye className="mr-2 h-4 w-4" />
@@ -200,7 +200,7 @@ export default function HeroSection() {
                 asChild
                 size="lg"
                 variant="outline"
-                className="border-gray-300 text-black hover:bg-gray-50 bg-transparent group"
+                className="border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800 bg-transparent group"
               >
                 <Link href="/posts">
                   <Users className="mr-2 h-4 w-4" />

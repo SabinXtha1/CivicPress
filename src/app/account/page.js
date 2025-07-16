@@ -7,7 +7,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { toast } from 'sonner';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { Loader2 } from 'lucide-react';
 
 export default function AccountPage() {
@@ -122,17 +123,19 @@ export default function AccountPage() {
     };
 
     if (authLoading || loading) {
-        return <div className="text-center py-8"><Loader2 className="h-8 w-8 animate-spin" /></div>;
+        return <div className="flex items-center justify-center min-h-screen"><Loader2 className="h-8 w-8 animate-spin" /></div>;
     }
 
     return (
-        <div className="container mx-auto py-8">
-            <h1 className="text-3xl font-bold mb-6">My Account</h1>
-            <div className="grid gap-8 md:grid-cols-2">
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Account Information</CardTitle>
-                    </CardHeader>
+        <div className="min-h-screen bg-gray-100 dark:bg-gray-900 py-8">
+            <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} />
+            <div className="container mx-auto">
+                <h1 className="text-3xl font-bold mb-6">My Account</h1>
+                <div className="grid gap-8 md:grid-cols-2">
+                    <Card className="bg-white dark:bg-gray-950">
+                        <CardHeader>
+                            <CardTitle>Account Information</CardTitle>
+                        </CardHeader>
                     <CardContent>
                         {userData && (
                             <form onSubmit={handleUpdateUser} className="space-y-4">
@@ -172,7 +175,7 @@ export default function AccountPage() {
                         )}
                     </CardContent>
                 </Card>
-                <Card>
+                <Card className="bg-white dark:bg-gray-950">
                     <CardHeader>
                         <CardTitle>Change Password</CardTitle>
                     </CardHeader>
@@ -206,7 +209,7 @@ export default function AccountPage() {
                 </Card>
             </div>
             <div className="mt-8">
-                <Card>
+                <Card className="bg-white dark:bg-gray-950">
                     <CardHeader>
                         <CardTitle>Delete Account</CardTitle>
                     </CardHeader>

@@ -29,13 +29,13 @@ export default function RegisterPage() {
     };
 
     return (
-        <div className="flex items-center justify-center min-h-[calc(100vh-80px)]">
+        <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
             <motion.div
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
             >
-                <Card className="w-[350px]">
+                <Card className="w-[350px] bg-white dark:bg-gray-950">
                     <CardHeader className="text-center">
                         <CardTitle className="text-2xl font-bold">Register</CardTitle>
                         <CardDescription>Create a new account.</CardDescription>

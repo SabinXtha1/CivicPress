@@ -9,7 +9,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, Dialog
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Toaster, toast } from 'react-hot-toast';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { Edit, Trash, Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -142,35 +143,38 @@ export default function AdminUsersPage() {
 
     if (loading) {
         return (
-            <div className="space-y-8 p-4">
-                <h1 className="text-4xl font-bold mb-6">Manage Users</h1>
-                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                    {[...Array(6)].map((_, i) => (
-                        <Card key={i}>
-                            <CardHeader>
-                                <Skeleton className="h-6 w-3/4 mb-2" />
-                                <Skeleton className="h-4 w-1/2" />
-                            </CardHeader>
-                            <CardContent>
-                                <Skeleton className="h-4 w-1/3 mb-1" />
-                                <Skeleton className="h-4 w-2/3 mb-1" />
-                                <Skeleton className="h-4 w-1/4 mb-4" />
-                                <div className="flex space-x-2">
-                                    <Skeleton className="h-10 w-10 rounded-md" />
-                                    <Skeleton className="h-10 w-10 rounded-md" />
-                                </div>
-                            </CardContent>
-                        </Card>
-                    ))}
+            <div className="min-h-screen bg-gray-100 dark:bg-gray-900 py-8">
+                <div className="container mx-auto">
+                    <h1 className="text-4xl font-bold mb-6">Manage Users</h1>
+                    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                        {[...Array(6)].map((_, i) => (
+                            <Card key={i} className="bg-white dark:bg-gray-950">
+                                <CardHeader>
+                                    <Skeleton className="h-6 w-3/4 mb-2" />
+                                    <Skeleton className="h-4 w-1/2" />
+                                </CardHeader>
+                                <CardContent>
+                                    <Skeleton className="h-4 w-1/3 mb-1" />
+                                    <Skeleton className="h-4 w-2/3 mb-1" />
+                                    <Skeleton className="h-4 w-1/4 mb-4" />
+                                    <div className="flex space-x-2">
+                                        <Skeleton className="h-10 w-10 rounded-md" />
+                                        <Skeleton className="h-10 w-10 rounded-md" />
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        ))}
+                    </div>
                 </div>
             </div>
         );
     }
 
     return (
-        <div className="space-y-8 p-4">
-            <Toaster position="bottom-right" />
-            <h1 className="text-4xl font-bold mb-6">Manage Users</h1>
+        <div className="min-h-screen bg-gray-100 dark:bg-gray-900 py-8">
+            <ToastContainer position="bottom-right" autoClose={5000} hideProgressBar={false} />
+            <div className="container mx-auto">
+                <h1 className="text-4xl font-bold mb-6">Manage Users</h1>
 
             {users.length === 0 ? (
                 <p>No users available.</p>
@@ -183,7 +187,7 @@ export default function AdminUsersPage() {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.3 }}
                         >
-                            <Card>
+                            <Card className="bg-white dark:bg-gray-950">
                                 <CardHeader>
                                     <CardTitle>{u.username}</CardTitle>
                                     <p className="text-sm text-muted-foreground">{u.email}</p>
@@ -209,7 +213,7 @@ export default function AdminUsersPage() {
 
             {currentEditingUser && (
                 <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-                    <DialogContent className="sm:max-w-[425px]">
+                    <DialogContent className="sm:max-w-[425px] bg-white dark:bg-gray-950">
                         <DialogHeader>
                             <DialogTitle>Edit User</DialogTitle>
                             <DialogDescription>

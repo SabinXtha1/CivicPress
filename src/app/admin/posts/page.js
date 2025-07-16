@@ -10,7 +10,8 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Toaster, toast } from 'react-hot-toast';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { Edit, Trash, Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -126,33 +127,36 @@ export default function AdminPostsPage() {
 
     if (loading) {
         return (
-            <div className="space-y-8 p-4">
-                <h1 className="text-4xl font-bold mb-6">Manage Posts</h1>
-                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                    {[...Array(6)].map((_, i) => (
-                        <Card key={i}>
-                            <CardHeader>
-                                <Skeleton className="h-6 w-3/4 mb-2" />
-                                <Skeleton className="h-4 w-1/2" />
-                            </CardHeader>
-                            <CardContent>
-                                <Skeleton className="h-48 w-full mb-4" />
-                                <div className="flex space-x-2">
-                                    <Skeleton className="h-10 w-10 rounded-md" />
-                                    <Skeleton className="h-10 w-10 rounded-md" />
-                                </div>
-                            </CardContent>
-                        </Card>
-                    ))}
+            <div className="min-h-screen bg-gray-100 dark:bg-gray-900 py-8">
+                <div className="container mx-auto">
+                    <h1 className="text-4xl font-bold mb-6">Manage Posts</h1>
+                    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                        {[...Array(6)].map((_, i) => (
+                            <Card key={i} className="bg-white dark:bg-gray-950">
+                                <CardHeader>
+                                    <Skeleton className="h-6 w-3/4 mb-2" />
+                                    <Skeleton className="h-4 w-1/2" />
+                                </CardHeader>
+                                <CardContent>
+                                    <Skeleton className="h-48 w-full mb-4" />
+                                    <div className="flex space-x-2">
+                                        <Skeleton className="h-10 w-10 rounded-md" />
+                                        <Skeleton className="h-10 w-10 rounded-md" />
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        ))}
+                    </div>
                 </div>
             </div>
         );
     }
 
     return (
-        <div className="space-y-8 p-4 ">
-            <Toaster position="bottom-right" />
-            <h1 className="text-4xl font-bold mb-6">Manage Posts</h1>
+        <div className="min-h-screen bg-gray-100 dark:bg-gray-900 py-8">
+            <ToastContainer position="bottom-right" autoClose={5000} hideProgressBar={false} />
+            <div className="container mx-auto">
+                <h1 className="text-4xl font-bold mb-6">Manage Posts</h1>
 
             {posts.length === 0 ? (
                 <p>No posts available.</p>
@@ -165,7 +169,7 @@ export default function AdminPostsPage() {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.3 }}
                         >
-                            <Card>
+                            <Card className="bg-white dark:bg-gray-950">
                                 <CardHeader>
                                     <CardTitle>{post.title}</CardTitle>
                                     <p className="text-sm text-muted-foreground">By {post.author?.username || 'Unknown'} on {new Date(post.createdAt).toLocaleDateString()}</p>
@@ -194,7 +198,7 @@ export default function AdminPostsPage() {
 
             {currentEditingPost && (
                 <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-                    <DialogContent className="sm:max-w-[425px]">
+                    <DialogContent className="sm:max-w-[425px] bg-white dark:bg-gray-950">
                         <DialogHeader>
                             <DialogTitle>Edit Post</DialogTitle>
                         </DialogHeader>
