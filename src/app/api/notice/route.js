@@ -94,7 +94,7 @@ export async function POST(req) {
     ` : ''}
 
     <div style="display: flex; align-items: center; margin: 20px 0;">
-      <img src="https://ward-2.vercel.app/devchuli-2.png" alt="Location Icon" style="width: 40px; height: 40px; margin-right: 10px;" />
+      <img src="/devchuli-2.png" alt="Location Icon" style="width: 40px; height: 40px; margin-right: 10px;" />
       <p style="margin: 0; font-size: 16px;">देवचुली २, नवलपुर</p>
     </div>
 
